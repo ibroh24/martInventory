@@ -21,6 +21,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->boolean('isAdmin')->nullable();
             $table->boolean('isAuditor')->nullable();
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
             $table->string('slug');
             $table->string('avatar');
             $table->rememberToken();

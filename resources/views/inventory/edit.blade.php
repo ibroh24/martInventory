@@ -43,11 +43,11 @@
                           </div> 
                         @endif
                         <div class="row">
-                          <div class="col-md-6">
+                          <div class="col-md-12">
                             <label class="control-label" style="margin-bottom: -8px">Product Name</label>
-                            <input type="text" value="{{$editInventory->productname}}" name="productname" class="form-control" placeholder="Product Name">
+                            <input type="text" id="productname" value="{{$editInventory->productname}}" name="productname" class="form-control" placeholder="Product Name">
                           </div>
-                          <div class="col-md-6">
+                          {{-- <div class="col-md-6">
                             <label class="control-label" style="margin-bottom: -8px">Product UOM</label>
                             <select class="form-control" name="productuom">
                                 <option>Select Product UOM</option>
@@ -59,7 +59,7 @@
                                     >{{$uom->uomname}}</option>    
                                 @endforeach  
                             </select>
-                          </div>
+                          </div> --}}
                         </div>
                         <br>
                         <div class="row">
@@ -85,11 +85,11 @@
                         <div class="row">
                             <div class="col-md-6">
                                     <label class="control-label" style="margin-bottom: -8px">Product Quantity (Bulk)</label>
-                                    <input type="number" id="productbulkqty" value="{{$editInventory->productbulkqty}}" name="productbulkqty" class="form-control" placeholder="Product Quantity (Bulk)">
+                                    <input type="number" id="productbulkqty" name="productbulkqty" class="form-control" placeholder="Product Quantity (Bulk)">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="control-label" style="margin-bottom: -8px">Product Quantity (Unit)</label>
-                                    <input type="number" id="productunitqty" value="{{$editInventory->productunitqty}}" name="productunitqty" class="form-control" placeholder="Product Quantity (Bulk)">                                
+                                    <input type="number" id="productunitqty" name="productunitqty" class="form-control" placeholder="Product Quantity (Bulk)">                                
                                 </div>
                           </div>
                           <br>
@@ -155,7 +155,7 @@
                                 <button type="submit" class="btn btn-info waves-effect waves-light w-md">
                                     Save
                                 </button>
-                                <a href="{{route('inventory.view')}}" type="reset" class="btn btn-warning waves-effect m-l-5 w-md">
+                                <a href="{{route('inventory.viewlowitem')}}" type="reset" class="btn btn-warning waves-effect m-l-5 w-md">
                                     Cancel
                                 </a>
                             {{-- </div> --}}
@@ -188,6 +188,28 @@
                     var result = parseFloat(sellingprice) - parseFloat(buyingprice);
                     $('#unitprofit').val(parseFloat(result.toFixed(3)));
                 }
+            });
+
+            var productName = $('#productname').val();
+            $.get("/getProductRemain/"+productName, function (data) {
+                console.log(data); 
+                var bulkRemain = parseInt(data[0].productbulkremain);
+                var unitRemain = parseInt(data[0].productunitremain);
+                
+                
+
+                $('#productbulkqty').on('change', function() { 
+                    var productBulkQty = $('#productbulkqty').val();
+                    productBulkQty = parseInt(productBulkQty) + bulkRemain;
+                    console.log(productBulkQty);
+                    $('#productbulkqty').val(productBulkQty);
+                });
+                $('#productunitqty').on('change', function() { 
+                    var productUnitQty = $('#productunitqty').val();
+                    productUnitQty = parseInt(productUnitQty) + unitRemain;
+                    console.log(productUnitQty);
+                    $('#productunitqty').val(productUnitQty);
+                });
             });
         });
     </script>

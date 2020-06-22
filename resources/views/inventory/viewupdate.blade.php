@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    Faajs | View Inventory
+    Faajs | Update Inventory
 @endsection
 
 @section('breadcrumb')
@@ -10,7 +10,7 @@
     Inventory Data 
 @endsection
 @section('submenu')
-    View Inventory
+    Update Inventory
 @endsection
 
 @section('content')
@@ -19,8 +19,7 @@
     <div class="col-sm-12">
         <div class="card-box table-responsive">
             <h4 class="m-t-0 header-title">
-                {{-- <b>View Inventory</b> --}}
-                <a href="{{route('inventory.create')}}" class="btn btn-info waves-light waves-effect w-md font-weight-bold text-uppercase"><span class="glyphicon glyphicon-plus"><b> New</b></span></a>
+                <b>Update Inventory</b>
             </h4>
             <hr>
             
@@ -29,25 +28,25 @@
             <table id="datatable-buttons" class="table table-striped table-colored table-info">
                 <thead>
                 <tr>
-                    {{-- <th>Action</th> --}}
+                    <th>Action</th>
                     <th>Product Name</th>
-                    <th>Quantity</th>
-                    {{-- <th>Unit Qty</th> --}}
+                    <th>Bulk Remain Qty</th>
+                    <th>Unit Remain Qty</th>
                     <th>Product Category</th>
-                    <th>Price</th>
-                    {{-- <th>Unit Price</th> --}}
-                    <th>Added Date</th>
+                    {{-- <th>Bulk Remain</th>
+                    <th>Unit Remain</th> --}}
+                    {{-- <th>Added Date</th> --}}
                     <th>Entered By</th>
                 </tr>
                 </thead>
 
 
                 <tbody>
-                    @if ($inventories->count() > 0)
-                    @foreach ($inventories as $inventory)
+                    @if ($inventoryDatas->count() > 0)
+                    @foreach ($inventoryDatas as $inventory)
                     {{-- {{dd($inventory)}} --}}
                 <tr>
-                    {{-- <td>
+                    <td>
                         @if (!Auth::user()->isAdmin)
                             <center>
                                 <a href="{{ route('inventory.edit', ['id'=>$inventory->productslug]) }}" title="Edit {{$inventory->productname}} Data" class="btn btn-sm btn-success  glyphicon glyphicon-edit" ></a>                            
@@ -56,14 +55,16 @@
                             <a href="{{ route('inventory.edit', ['id'=>$inventory->productslug]) }}" title="Edit {{$inventory->productname}} Data" class="btn btn-sm btn-success glyphicon glyphicon-edit" ></a>
                         @endif
                         @if (Auth::user()->isAdmin)
-                            <a onclick=" return confirm('Are you sure you want to delete {{$inventory->categoryname}} Data')" title="Delete {{$inventory->productname}} Data"  href="{{ route('inventory.destroy', ['id'=>$inventory->productslug])}}" class="btn btn-sm btn-danger glyphicon glyphicon-trash"></a>
+                            <a onclick=" return confirm('Are you sure you want to delete {{$inventory->productname}} Data')" title="Delete {{$inventory->productname}} Data"  href="{{ route('inventory.destroy', ['id'=>$inventory->productslug])}}" class="btn btn-sm btn-danger glyphicon glyphicon-trash"></a>
                         @endif
-                    </td> --}}
+                    </td>
                     <td>{{$inventory->productname}}</td>
-                    <td>{{$inventory->productqty}}</td>
+                    <td>{{$inventory->productbulkremain}}</td>
+                    <td>{{$inventory->productunitremain}}</td>
                     <td>{{$inventory->productcategory}}</td>
-                    <td>{{number_format($inventory->sellingprice, 2)}}</td>
-                    <td>{{$inventory->created_at->format('l, F d, Y')}}</td>
+                    {{-- <td>{{(int)number_format($inventory->bulksellingprice, 2)}}</td>
+                    <td>{{(int)number_format($inventory->unitsellingprice, 2)}}</td> --}}
+                    {{-- <td>{{$inventory->created_at->format('l, F d, Y')}}</td> --}}
                     <td>{{$inventory->enteredby}}</td>
                 </tr>
                 @endforeach

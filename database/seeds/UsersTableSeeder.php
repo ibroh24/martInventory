@@ -17,6 +17,8 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('Password@1'),
             'avatar'=> 'images/defaultAvatar.png',
             'isAdmin' => 1,
+            'phone' => '07063543872',
+            'address' => 'Ikeja, Lagos State',
             'slug' => 'Ibroh24'
         ]);
 
@@ -26,6 +28,8 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('demo'),
             'avatar'=> 'images/defaultAvatar.png',
             // 'isAdmin' => 1,
+            'phone' => '07063543872',
+            'address' => 'Ikeja, Lagos State',
             'slug' => 'demo'
         ]);
     }

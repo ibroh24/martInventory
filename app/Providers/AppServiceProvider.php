@@ -25,5 +25,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+        // view()->composer('layouts.master', 'App\Http\Composers\MasterComposer');
+        // view()->composer('layouts.master', function($view)
+        // {
+        //     $view->with('inventoryDatas', $inventoryDatas);
+        // });
     }
 }

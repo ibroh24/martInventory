@@ -75,7 +75,7 @@
 
                 <!-- LOGO -->
                 <div class="topbar-left">
-                    <a href="{{ route('dashboard') }}" class="logo"><span>Faajs<span> Aneefat</span></span><i class="mdi mdi-cube"></i></a>
+                    <a href="{{ route('dashboard') }}" class="logo"><span>Faaajs<span> Aneefat</span></span><i class="mdi mdi-cube"></i></a>
                 </div>
 
                 <!-- Button mobile view to collapse sidebar menu -->
@@ -93,15 +93,40 @@
 
                         <!-- Right(Notification) -->
                         <ul class="nav navbar-nav navbar-right">
+                            {{-- {{dd($inventoryDatas)}} --}}
+                            @if (isset($inventoryDatas) && !empty($inventoryDatas))
                             <li>
                                 <a href="#" class="right-menu-item dropdown-toggle" data-toggle="dropdown">
                                     <i class="mdi mdi-bell"></i>
-                                    {{-- @if ()
-                                        
-                                    @else
-                                        
-                                    @endif --}}
-                                    <span class="badge up bg-danger">4</span>
+                                   
+                                    <span class="badge up bg-danger">{{count($inventoryDatas)? count($inventoryDatas) : '' }}</span>
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right dropdown-lg user-list notify-list">
+                                    <li>
+                                        <h5>Notifications on Low Product</h5>
+                                    </li>
+                                    @foreach ($inventoryDatas as $inventory)
+                                    <li>
+                                        <a href="{{route('inventory.viewlowitem')}}" class="user-list-item">
+                                            <div class="icon bg-danger">
+                                                <i class="mdi mdi-comment"></i>
+                                            </div>
+                                            <div class="user-desc">
+                                                <span class="name">{{$inventory->productname}}</span>
+                                                <span class="time">Product Remains: {{$inventory->productremain}}</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </li>                                
+                            @else
+                            <li>
+                                <a href="#" class="right-menu-item dropdown-toggle" data-toggle="dropdown">
+                                    <i class="mdi mdi-bell"></i>
+                                   
+                                    <span class="badge up bg-danger"></span>
                                 </a>
 
                                 <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right dropdown-lg user-list notify-list">
@@ -110,31 +135,20 @@
                                     </li>
                                     <li>
                                         <a href="#" class="user-list-item">
-                                            <div class="icon bg-info">
-                                                <i class="mdi mdi-account"></i>
-                                            </div>
-                                            <div class="user-desc">
-                                                <span class="name">New Signup</span>
-                                                <span class="time">5 hours ago</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="user-list-item">
-                                            <div class="icon bg-danger">
+                                            <div class="icon bg-success">
                                                 <i class="mdi mdi-comment"></i>
                                             </div>
                                             <div class="user-desc">
-                                                <span class="name">New Message received</span>
-                                                <span class="time">1 day ago</span>
+                                                <span class="name"> No News</span>
+                                                <hr>
+                                                {{-- <span class="time">1 day ago</span> --}}
                                             </div>
                                         </a>
                                     </li>
-                                    <li class="all-msgs text-center">
-                                        <p class="m-0"><a href="#">See all Notification</a></p>
-                                    </li>
                                 </ul>
-                            </li>
+                            </li>        
+                            @endif
+                           
 
                             <li class="dropdown user-box">
                                 <a href="" class="dropdown-toggle waves-effect waves-light user-link" data-toggle="dropdown" aria-expanded="true">
@@ -143,7 +157,6 @@
 
                                 <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right user-list notify-list">
                                     <li>
-                                        {{-- <h5>Hi, John</h5> --}}
                                         <h5>Hi, {{ Auth::user()->name }}</h5>
                                     </li>
                                     <li><a href="javascript:void(0)"><i class="ti-user m-r-5"></i> Profile</a></li>
@@ -208,10 +221,10 @@
                                 <a href="javascript:void(0);" class="waves-effect"><i class=" mdi mdi-chart-histogram"></i><span> Inventory </span> <span class="menu-arrow"></span></a>
                                 <ul class="list-unstyled">
                                     <li><a href="{{route('inventory.view')}}"> Enter & View Inventory Items</a></li>
-                                    <li><a href="{{route('measure.view')}}"> Item UOM Setup</a></li>
-                                    <li><a href="{{route('category.view')}}"> Item Categories Setup</a></li>
-                                    <li><a href="{{route('supplier.view')}}"> Enter & View Suppliers</a></li>
-                                    <li><a href="{{route('stock.view')}}"> Manage Stock</a></li>
+                                    <li><a href="{{route('inventory.viewlowitem')}}"> Update Inventory Items</a></li>
+                                    <li><a href="{{route('stock.view')}}"> View Inventory Flows</a></li>
+                                   
+                                    
                                 </ul>
                             </li>
 
@@ -224,32 +237,34 @@
                                 </ul>
                             </li>
 
+                            @if (Auth::user()->isAdmin)
+                                <li class="menu-title">Settings</li>
 
-                        
+                                <li class="has_sub">
+                                    <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-settings"></i><span> Setup </span> <span class="menu-arrow"></span></a>
+                                    <ul class="list-unstyled">
+                                        <li><a href="{{route('category.view')}}"> Item Categories Setup</a></li>
+                                        <li><a href="{{route('measure.view')}}"> Item UOM Setup</a></li>
+                                        <li><a href="{{route('supplier.view')}}"> Enter & View Suppliers</a></li>
+                                    </ul>
+                                </li>
+                                <li class="has_sub">
+                                    <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account"></i><span> Users </span> <span class="menu-arrow"></span></a>
+                                    <ul class="list-unstyled">
+                                        <li><a href="{{route('user.view')}}">Enter & View Users</a></li>
+                                        <li><a href="chart-morris.html">Users Sales</a></li>
+                                    </ul>
+                                </li>
 
-                           
-
-                            <li class="menu-title">Settings</li>
-
-                            <li class="has_sub">
-                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account"></i><span> Users </span> <span class="menu-arrow"></span></a>
-                                <ul class="list-unstyled">
-                                    <li><a href="chart-flot.html">Enter & View Users</a></li>
-                                    <li><a href="chart-morris.html">Users Sales</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="has_sub">
-                                <a href="javascript:void(0);" class="waves-effect"><i class=" ti-receipt"></i><span> Reports </span> <span class="menu-arrow"></span></a>
-                                <ul class="list-unstyled">
-                                    <li><a href="chart-flot.html">Enter & View Users</a></li>
-                                    <li><a href="chart-morris.html">Users Sales</a></li>
-                                </ul>
-                            </li>
-
-                          
-
-                        </ul>
+                                <li class="has_sub">
+                                    <a href="javascript:void(0);" class="waves-effect"><i class=" ti-receipt"></i><span> Reports </span> <span class="menu-arrow"></span></a>
+                                    <ul class="list-unstyled">
+                                        <li><a href="chart-flot.html">Enter & View Users</a></li>
+                                        <li><a href="chart-morris.html">Users Sales</a></li>
+                                    </ul>
+                                </li>
+                            @endif
+                        {{-- </ul> --}}
                     </div>
                     <!-- Sidebar -->
                     <div class="clearfix"></div>

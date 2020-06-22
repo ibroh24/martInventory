@@ -53,10 +53,17 @@
                               </select> --}}
   
                               <label class="control-label" style="margin-bottom: -8px">Sales Type</label>
-                              <select class="form-control" value="{{$editSales->itemtype}}" id="itemtype" name="itemtype">
+                              <select class="form-control" id="itemtype" name="itemtype">
                                   <option>Select Sales Type</option>
-                                  <option class="m-t-20" value="Bulk">Bulk</option>    
-                                  <option class="m-t-20" value="Unit">Unit</option>    
+                                  <option class="m-t-20" value="Bulk"
+                                    @if(strtolower($editSales->itemtype) == "bulk")
+                                      selected
+                                    @elseif(strtolower($editSales->itemtype) == "unit")
+                                        selected
+                                    @endif
+                                  >Bulk</option>    
+                                  <option class="m-t-20" value="Unit"
+                                  >Unit</option>    
                               </select>
                             </div>
                             <div class="col-md-6">
@@ -64,7 +71,11 @@
                               <select class="form-control" id="itemname" name="itemname">
                                   <option>Select Item</option>
                                   @foreach ($products as $product)
-                                      <option class="m-t-20" value="{{$product->productname}}">{{$product->productname}}</option>    
+                                      <option class="m-t-20" value="{{$product->productname}}"
+                                        @if ($product->productname == $editSales->itemname)
+                                            selected
+                                        @endif
+                                        >{{$product->productname}}</option>    
                                   @endforeach  
                               </select>
                             </div>

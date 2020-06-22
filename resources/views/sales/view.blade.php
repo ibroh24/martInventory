@@ -29,10 +29,12 @@
             <table id="datatable-buttons" class="table table-striped table-colored table-info">
                 <thead>
                 <tr>
-                    <th>Action</th>
+                    @if (Auth::user()->isAdmin)
+                        <th>Action</th>
+                    @endif
                     <th>Item Name</th>
-                    <th>Sales Type</th>
-                    <th>Qty/Rate</th>
+                    {{-- <th>Sales Type</th> --}}
+                    <th>Quantity</th>
                     <th>Price</th>
                     <th>Total</th>
                     {{-- <th>Unit Price</th> --}}
@@ -47,20 +49,22 @@
                     @if ($allSales->count() > 0)
                     @foreach ($allSales as $sales)
                 <tr>
+                    @if (Auth::user()->isAdmin)
                     <td>
-                        @if (!Auth::user()->isAdmin)
+                       
                         <center>
                             <a href="{{ route('sales.edit', ['id'=>$sales->itemslug]) }}" title="Edit {{$sales->itemname}} Data" class="btn btn-sm btn-success  glyphicon glyphicon-edit" ></a>                            
                         </center>
-                        @else
-                            <a href="{{ route('sales.edit', ['id'=>$sales->itemslug]) }}" title="Edit {{$sales->itemname}} Data" class="btn btn-sm btn-success glyphicon glyphicon-edit" ></a>
-                        @endif
-                        @if (Auth::user()->isAdmin)
+                        {{-- @else
+                            <a href="{{ route('sales.edit', ['id'=>$sales->itemslug]) }}" title="Edit {{$sales->itemname}} Data" class="btn btn-sm btn-success glyphicon glyphicon-edit" ></a> --}}
+                       
+                        {{-- @if (Auth::user()->isAdmin)
                             <a onclick=" return confirm('Are you sure you want to delete {{$sales->itemname}} Data')" title="Delete {{$sales->itemname}} Data"  href="{{ route('sales.destroy', ['id'=>$sales->itemslug])}}" class="btn btn-sm btn-danger glyphicon glyphicon-trash"></a>
-                        @endif
+                        @endif --}}
                     </td>
+                    @endif
                     <td>{{$sales->itemname}}</td>
-                    <td>{{$sales->itemtype}}</td>
+                    {{-- <td>{{$sales->itemtype}}</td> --}}
                     <td>{{$sales->itemqty}}</td>
                     {{-- <td>{{$sales->itemprice}}</td>
                     <td>{{$sales->totalprice}}</td> --}}

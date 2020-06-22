@@ -7,6 +7,7 @@ use App\Sales;
 use App\Category;
 use App\Supplier;
 use App\Inventory;
+use App\SalesBackup;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\DB;
 
@@ -49,7 +50,7 @@ class SalesController extends Controller
     {
         $this->validate($request, [
             'itemname' => 'required',
-            'itemtype' => 'required',
+            // 'itemtype' => 'required',
             'itemprice' => 'required|numeric',
             'itemqty' => 'required|numeric',
             'totalprice' => 'required|numeric',
@@ -59,7 +60,7 @@ class SalesController extends Controller
         $saveSales = Sales::create(
             [
                 'itemname' => $request->itemname,
-                'itemtype' => $request->itemtype,
+                'itemcategory' => $request->itemcategory,
                 'itemprice' => $request->itemprice,
                 'itemqty' => $request->itemqty,
                 'totalprice' => $request->totalprice,
@@ -73,27 +74,88 @@ class SalesController extends Controller
         $itemQty = $request->itemqty;
         $itemType = strtolower($request->itemtype);
         $inventoryQty = Inventory::where('productname', $itemSold)->first();
-        $currentBulkQty = $inventoryQty->productbulkqty;
-        $currentUnitQty = $inventoryQty->productunitqty;
+        $currentQty = $inventoryQty->productremain;
+        // $currentUnitQty = $inventoryQty->productremain;
         $saveSales->save();
+        $saveSalesBackup = '';
         if($saveSales){
-            if($itemType == 'unit'){
-                DB::table('inventories')
-                    ->join('sales', 'sales.itemname', '=', 'inventories.productname')
-                    ->where([
-                        ['sales.itemname', '=', $itemSold, ],
-                        ['inventories.productname', '=', $itemSold, ]
-                    ])
-                    ->update(['inventories.productunitremain' => $currentUnitQty - $itemQty]);
-            }elseif ($itemType == 'bulk') {
+            // if($itemType == 'unit'){
+            DB::table('inventories')
+                ->join('sales', 'sales.itemname', '=', 'inventories.productname')
+                ->where([
+                    ['sales.itemname', '=', $itemSold],
+                    ['inventories.productname', '=', $itemSold]
+                ])
+                ->update([
+                    'inventories.productremain' => $currentQty - $itemQty,
+                    'sales.remainitem' => $currentQty - $itemQty
+                    ]);
+
+                // updating inventory_backups
+                DB::table('inventory_backups')
+                ->join('sales', 'sales.itemname', '=', 'inventory_backups.productname')
+                ->where([
+                    ['sales.itemname', '=', $itemSold],
+                    ['inventory_backups.productname', '=', $itemSold]
+                ])
+                ->update([
+                    'inventory_backups.productremain' => $currentQty - $itemQty,
+                    'sales.remainitem' => $currentQty - $itemQty
+                ]);
+
+            /* }elseif ($itemType == 'bulk') {
                 DB::table('inventories')
                 ->join('sales', 'sales.itemname', '=', 'inventories.productname')
                 ->where([
                     ['sales.itemname', '=', $itemSold, ],
                     ['inventories.productname', '=', $itemSold, ]
                 ])
-                ->update(['inventories.productbulkremain' => $currentBulkQty - $itemQty]);
+                ->update([
+                    'inventories.productbulkremain' => $currentBulkQty - $itemQty,
+                    'sales.remainitem' => $currentBulkQty - $itemQty
+                    ]);
+
+                // updating inventory_backups
+                DB::table('inventory_backups')
+                ->join('sales', 'sales.itemname', '=', 'inventory_backups.productname')
+                ->where([
+                    ['sales.itemname', '=', $itemSold, ],
+                    ['inventory_backups.productname', '=', $itemSold, ]
+                ])
+                ->update([
+                    'inventory_backups.productbulkremain' => $currentBulkQty - $itemQty,
+                    'sales.remainitem' => $currentBulkQty - $itemQty
+                    ]);
+            }   */
+
+            $insertSalesBackup = SalesBackup::create(
+                [
+                    'itemname' => $request->itemname,
+                    'itemcategory' => $request->itemcategory,
+                    'itemprice' => $request->itemprice,
+                    'itemqty' => $request->itemqty,
+                    'totalprice' => $request->totalprice,
+                    'soldby' => $request->soldby,
+                    'itemslug' => str_slug($request->itemname)
+                ] 
+            );
+
+            $insertSalesBackup->save();
+
+            if($insertSalesBackup){
+                DB::table('sales_backups')
+                ->join('sales', 'sales.itemname', '=', 'sales_backups.itemname')
+                ->where([
+                    ['sales.itemname', '=', $itemSold],
+                    ['sales_backups.itemname', '=', $itemSold]
+                ])
+                ->update([
+                    'sales_backups.remainitem' => $currentQty - $itemQty,
+
+                    ]);
+
             }
+
 
         }
 
@@ -108,7 +170,7 @@ class SalesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    /*
+    
     public function getProduct($selectedCats)
     {
         $catInfo = DB::table('inventories')
@@ -119,12 +181,12 @@ class SalesController extends Controller
         // dd($catInfo);
         return $catInfo;
     }
-    */
+    
 
     public function getProductPrice($selectedItem)
     {
         $productPrice = DB::table('inventories')
-                    ->select('productname','productbulkremain', 'productunitremain', 'bulksellingprice', 'unitsellingprice')
+                    ->select('productname','productremain', 'sellingprice')
                     ->where('productname', '=', $selectedItem)
                     ->get();
         // dd($productPrice);
@@ -169,18 +231,14 @@ class SalesController extends Controller
             'soldby' => 'required'
         ]);
         
-        $saveSales = Sales::where('salesslug', $id)->first();
-        $saveSales = Sales::create(
-            [
-                'itemname' => $request->itemname,
-                'itemtype' => $request->itemtype,
-                'itemprice' => $request->itemprice,
-                'itemqty' => $request->itemqty,
-                'totalprice' => $request->totalprice,
-                'soldby' => $request->soldby,
-                'itemslug' => str_slug($request->itemname)
-            ] 
-        );
+        $updateSales = Sales::where('salesslug', $id)->first();
+        $updateSales->itemname = $request->itemname;
+        $updateSales->itemtype = $request->itemtype;
+        $updateSales->itemprice = $request->itemprice;
+        $updateSales->itemqty = $request->itemqty;
+        $updateSales->totalprice = $request->totalprice;
+        $updateSales->soldby = $request->soldby;
+        $updateSales->itemslug = str_slug($request->itemname);
         
         // dd(strtolower($request->itemtype));
         $itemSold = $request->itemname;
@@ -189,8 +247,8 @@ class SalesController extends Controller
         $inventoryQty = Inventory::where('productname', $itemSold)->first();
         $currentBulkQty = $inventoryQty->productbulkqty;
         $currentUnitQty = $inventoryQty->productunitqty;
-        $saveSales->save();
-        if($saveSales){
+        $updateSales->save();
+        if($updateSales){
             if($itemType == 'unit'){
                 DB::table('inventories')
                     ->join('sales', 'sales.itemname', '=', 'inventories.productname')
@@ -198,7 +256,7 @@ class SalesController extends Controller
                         ['sales.itemname', '=', $itemSold, ],
                         ['inventories.productname', '=', $itemSold, ]
                     ])
-                    ->update(['inventories.productunitremain' => $currentUnitQty - $itemQty]);
+                    ->update(['inventories.productremain' => $currentUnitQty - $itemQty]);
             }elseif ($itemType == 'bulk') {
                 DB::table('inventories')
                 ->join('sales', 'sales.itemname', '=', 'inventories.productname')

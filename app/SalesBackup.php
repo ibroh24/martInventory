@@ -5,9 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class Sales extends Model
+class SalesBackup extends Model
 {
-    // 
     use Notifiable;
 
     protected $fillable = [

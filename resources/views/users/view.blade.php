@@ -1,16 +1,16 @@
 @extends('layouts.master')
 @section('title')
-    Faajs | View Categories
+    Faajs | View Users
 @endsection
 
 @section('breadcrumb')
-    Product Categories
+    Users
 @endsection
 @section('menuname')
-    Categories 
+    Users 
 @endsection
 @section('submenu')
-    View Categories
+    View Users
 @endsection
 
 @section('content')
@@ -20,7 +20,7 @@
         <div class="card-box table-responsive">
             <h4 class="m-t-0 header-title">
                 {{-- <b>View Inventory</b> --}}
-                <a href="{{route('category.create')}}" class="btn btn-info waves-light waves-effect w-md font-weight-bold text-uppercase"><span class="glyphicon glyphicon-plus"><b> New</b></span></a>
+                <a href="{{route('user.create')}}" class="btn btn-info waves-light waves-effect w-md font-weight-bold text-uppercase"><span class="glyphicon glyphicon-plus"><b> New</b></span></a>
             </h4>
             <hr>
             
@@ -29,25 +29,29 @@
             <table id="datatable-buttons" class="table table-striped table-hover table-colored table-info">
                 <thead>
                 <tr>
-                    {{-- <th>Action</th> --}}
-                    <th>Category Name</th>
-                    <th>Category Description</th>
-                    <th>Created Date</th>
+                    <th>Action</th>
+                    <th>Name</th>
+                    <th>E - Mail</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Is Admin</th>
                 </tr>
                 </thead>
 
 
                 <tbody>
-                    @if ($categories->count() > 0)
-                    @foreach ($categories as $category)
+                    @if ($users->count() > 0)
+                    @foreach ($users as $user)
                 <tr>
-                    {{-- <td>
-                        <a href="{{ route('category.edit', ['id'=>$category->categoryslug]) }}" title="Edit {{$category->categoryname}} Category" class="btn btn-sm btn-success glyphicon glyphicon-edit m-r-5" ></a>
-                        <a onclick=" return confirm('Are you sure you want to delete {{$category->categoryname}} Category')" title="Delete {{$category->categoryname}} Category"  href="{{ route('category.destroy', ['id'=>$category->categoryslug])}}" class="btn btn-sm btn-danger glyphicon glyphicon-trash"></a>
-                    </td> --}}
-                    <td>{{$category->categoryname}}</td>
-                    <td>{{$category->categorydesc}}</td>
-                    <td>{{$category->created_at->format('l, F d, Y')}}</td>
+                    <td>
+                        <a href="{{ route('user.edit', ['id'=>$user->slug]) }}" title="Edit {{$user->username}} user" class="btn btn-sm btn-success glyphicon glyphicon-edit m-r-5" ></a>
+                        <a onclick=" return confirm('Are you sure you want to delete {{$user->name}} Data')" title="Delete {{$user->name}} Data"  href="{{ route('user.destroy', ['id'=>$user->slug])}}" class="btn btn-sm btn-danger glyphicon glyphicon-trash"></a>
+                    </td>
+                    <td>{{$user->name}}</td>
+                    <td>{{$user->email}}</td>
+                    <td>{{$user->address}}</td>
+                    <td>{{$user->phone}}</td>
+                    <td>{{$user->isAdmin ? "True" : "False"}}</td>
                 </tr>
                 @endforeach
                 @endif
@@ -55,7 +59,7 @@
             </table>
         </div>
     </div>
-{{-- </div> --}}
+
 
 @endsection
 

@@ -29,7 +29,7 @@
             <table id="datatable-buttons" class="table table-striped table-hover table-colored table-info">
                 <thead>
                 <tr>
-                    <th>Action</th>
+                    {{-- <th>Action</th> --}}
                     <th>UOM Name</th>
                     <th>UOM Description</th>
                     <th>Created Date</th>
@@ -41,10 +41,10 @@
                     @if ($measure->count() > 0)
                     @foreach ($measure as $uom)
                     <tr>
-                        <td>
+                        {{-- <td>
                             <a href="{{ route('measure.edit', ['id'=>$uom->uomslug]) }}" title="Edit {{$uom->uomname}} Data" class="btn btn-sm btn-success glyphicon glyphicon-edit m-r-5" ></a>
                             <a onclick=" return confirm('Are you sure you want to delete {{$uom->uomname}} Data')" title="Delete {{$uom->uomname}} Data"  href="{{ route('measure.destroy', ['id'=>$uom->uomslug])}}" class="btn btn-sm btn-danger glyphicon glyphicon-trash"></a>
-                        </td>
+                        </td> --}}
                         <td>{{$uom->uomname}}</td>
                         <td>{{$uom->uomdescription}}</td>
                         <td>{{$uom->created_at->format('l, F d, Y')}}</td>

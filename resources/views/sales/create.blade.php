@@ -44,28 +44,28 @@
                         @endif
                         <div class="row">
                           <div class="col-md-6">
-                            {{-- <label class="control-label" style="margin-bottom: -8px">Item Category</label>
+                            <label class="control-label" style="margin-bottom: -8px">Item Category</label>
                             <select class="form-control" id="itemcategory" name="itemcategory">
                                 <option>Select Item Category</option>
                                 @foreach ($productCategory as $category)
                                     <option class="m-t-20" value="{{$category->categoryname}}">{{$category->categoryname}}</option>    
                                 @endforeach  
-                            </select> --}}
+                            </select>
 
-                            <label class="control-label" style="margin-bottom: -8px">Sales Type</label>
+                            {{-- <label class="control-label" style="margin-bottom: -8px">Sales Type</label>
                             <select class="form-control" id="itemtype" name="itemtype">
                                 <option>Select Sales Type</option>
                                 <option class="m-t-20" value="Bulk">Bulk</option>    
                                 <option class="m-t-20" value="Unit">Unit</option>    
-                            </select>
+                            </select> --}}
                           </div>
                           <div class="col-md-6">
                             <label class="control-label" style="margin-bottom: -8px">Item Name</label>
                             <select class="form-control" id="itemname" name="itemname">
-                                <option>Select Item</option>
+                                {{-- <option>Select Item</option>
                                 @foreach ($products as $product)
                                     <option class="m-t-20" value="{{$product->productname}}">{{$product->productname}}</option>    
-                                @endforeach  
+                                @endforeach   --}}
                             </select>
                           </div>
                         </div>
@@ -117,70 +117,46 @@
     <script>
         $(document).ready(function () {        
             // loading product ajax call
-            // $('#itemcategory').on('change', function () {
-            //     var selectedCats = $('#itemcategory').val().toLowerCase();
-            //     // console.log(selectedCats);
-            //     if(selectedCats.toLowerCase() !==''){
-            //         $.get("/getProduct/"+selectedCats, function (data) {
-            //             $('#itemname').empty();
-            //             var itemname = "<select class='form-control' id='itemname' name='itemname'>";
-            //             itemname += "<option>- Item Name - </option>";
-            //             $.each(data, function(i, item){
-            //                 // console.log(data);
-            //                 // console.log(data[i].itemname)
-            //                 itemname += "<option value='"+ data[i].productname + "'>" + data[i].productname+ "</option>";
-            //             });
-            //             itemname += "</select>";
-            //             $('#itemname').replaceWith(itemname);
-            //         });
-            //     }
-            // });
+            $('#itemcategory').on('change', function () {
+                var selectedCats = $('#itemcategory').val().toLowerCase();
+                // console.log(selectedCats);
+                if(selectedCats.toLowerCase() !==''){
+                    $.get("/getProduct/"+selectedCats, function (data) {
+                        $('#itemname').empty();
+                        $('#itemname').append("<option value=''> - Select Item Name - </option>");
+                        itemname += "";
+                        $.each(data, function(i, item){
+                            $('#itemname').append("<option value='"+ data[i].productname + "'>" + data[i].productname+ "</option>");
+                        });
+                    });
+                }
+            });
             
             $('#itemname').on('change', function () {
-            var selectedType = $('#itemtype').val().toLowerCase();
-            var selectedItem = $('#itemname').val().toLowerCase();
-            $('#totalprice').empty();
-            // console.log(selectedType)
-            // alert(selectedItem)
-            // var bulkRemain = ''
-            $.get("/getProductPrice/"+selectedItem, function (data) {
-                if(selectedType == 'bulk'){
-                    $('#itemprice').val(data[0].bulksellingprice)
-                }else if(selectedType == 'unit'){
-                    $('#itemprice').val(data[0].unitsellingprice);
-                }else{
-                    alert("Please Select Sales Type Before Proceding")
-                }
-                    // console.log(data);                    
-              
-            $('#itemqty').on('change', function () {
-                console.log(data); 
-                var itemPrice = $('#itemprice').val();
-                var itemQty = $('#itemqty').val();
-                var bulkRemain = parseInt(data[0].productbulkremain);
-                var unitRemain = parseInt(data[0].productunitremain);
-                console.log(itemQty); console.log(bulkRemain); console.log(unitRemain)
-                if(selectedType == 'unit'){
-                    if(itemQty >= unitRemain){
-                        alert("The Remaining Quantity is Lower Than Purchase Item")
-                    }else{
-                        $('#totalprice').val(parseFloat(itemPrice) * parseFloat(itemQty));
-                    }
-                }else if(selectedType == 'bulk'){
-                    if(itemQty >= bulkRemain){
-                        alert("The Remaining Quantity is Lower Than Purchase Item")
-                    }else{
-                        $('#totalprice').val(parseFloat(itemPrice) * parseFloat(itemQty)); 
-                    }
-                }
+                var selectedItem = $('#itemname').val().toLowerCase();
+                $('#totalprice').empty();
+                $.get("/getProductPrice/"+selectedItem, function (data) {
+                    $('#itemprice').val(data[0].sellingprice);
 
-                $('#itemtype').attr("style", "pointer-events: none;");
-                $('#itemname').attr("style", "pointer-events: none;");        
+                    $('#itemqty').on('change', function () {
+                        console.log(data); 
+                        var itemPrice = $('#itemprice').val();
+                        var itemQty = $('#itemqty').val();
+                        var productRemain = parseInt(data[0].productremain);
+                        // console.log(itemQty); console.log(bulkRemain); console.log(unitRemain)
+                        if(itemQty >= productRemain){
+                            alert("The Remaining Quantity is Lower Than Purchase Quantity")
+                            $('#itemqty').val("");
+                        }else{
+                            $('#totalprice').val(parseFloat(itemPrice) * parseFloat(itemQty));
+                        }             
+                        $('#itemcategory').attr("style", "pointer-events: none;");
+                        $('#itemname').attr("style", "pointer-events: none;");        
                 
-            });
+                    });
+                });
             });
         });
-    });
     </script>
     
 @endsection

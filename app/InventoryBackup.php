@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class Inventory extends Model
+class InventoryBackup extends Model
 {
     use Notifiable;
 

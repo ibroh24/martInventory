@@ -27,6 +27,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
     // Inventory crud
     Route::get('/inventory', 'InventoryController@index')->name('inventory.view');
+    Route::get('/inventoryupdate', 'InventoryController@lowItems')->name('inventory.viewlowitem');
     Route::get('/inventory/create', 'InventoryController@create')->name('inventory.create');
     Route::post('/inventory/store', 'InventoryController@store')->name('inventory.store');
     Route::get('/inventory/delete/{slug}', 'InventoryController@destroy')->name('inventory.destroy');
@@ -68,8 +69,20 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
     // stock data 
     Route::get('/stockdata', 'StockController@index')->name('stock.view');
+    Route::get('/stockshowdata/{slug}', 'StockController@show')->name('stock.show');
+    Route::get('/stockprintdata/{slug}', 'StockController@print')->name('stock.print');
+
+     // User crud
+     Route::get('/user', 'UserController@index')->name('user.view');
+     Route::get('/user/create', 'UserController@create')->name('user.create');
+     Route::post('/user/store', 'UserController@store')->name('user.store');
+     Route::get('/user/delete/{slug}', 'UserController@destroy')->name('user.destroy');
+     Route::get('/user/edit/{slug}', 'UserController@edit')->name('user.edit');
+     Route::post('/user/update/{slug}', 'UserController@update')->name('user.update');
+ 
 });
 
 // ajax Calls
 Route::get('/getProduct/{selectedCats}', 'SalesController@getProduct');
 Route::get('/getProductPrice/{selectedItem}', 'SalesController@getProductPrice');
+Route::get('/getProductRemain/{selectedCats}', 'InventoryController@getProductRemain');

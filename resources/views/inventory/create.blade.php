@@ -76,53 +76,9 @@
                         <br>
                         <div class="row">
                             <div class="col-md-6">
-                                <label class="control-label" style="margin-bottom: -8px">Product Quantity (Bulk)</label>
-                                <input type="number" id="productbulkqty" name="productbulkqty" class="form-control" placeholder="Product Quantity (Bulk)">
+                                <label class="control-label" style="margin-bottom: -8px">Product Quantity (Bulk/Unit)</label>
+                                <input type="number" id="productqty" name="productqty" class="form-control" placeholder="Product Quantity (Bulk/Unit)">
                             </div>
-                            <div class="col-md-6">
-                                <label class="control-label" style="margin-bottom: -8px">Product Quantity (Unit)</label>
-                                <input type="number" id="productunitqty" name="productunitqty" class="form-control" placeholder="Product Quantity (Bulk)">                                
-                            </div>
-                          </div>
-                          <br>
-                          <div class="row">
-                            <div class="col-md-6">
-                                <label class="control-label" style="margin-bottom: -8px">Bulk Buying Price</label>
-                              <input type="number" id="bulkbuyingprice" name="bulkbuyingprice" class="form-control" placeholder="Bulk Buying Price">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="control-label" style="margin-bottom: -8px">Bulk Selling Price</label>
-                                <input type="number" id="bulksellingprice" name="bulksellingprice" class="form-control" placeholder="Bulk Selling Price">
-                            </div>
-                          </div>
-                          <br>
-                          <div class="row">
-                            <div class="col-md-6">
-                                <label class="control-label" style="margin-bottom: -8px">Unit Buying Price</label>
-                              <input type="number" id="unitbuyingprice" name="unitbuyingprice" class="form-control" placeholder="Unit Buying Price">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="control-label" style="margin-bottom: -8px">Unit Selling Price</label>
-                                <input type="number" id="unitsellingprice" name="unitsellingprice" class="form-control" placeholder="Unit Selling Price">
-                            </div>
-                          </div>
-                          <br>
-                          <div class="row">
-                            <div class="col-md-6">
-                                {{-- <div class="form-group"> --}}
-                                    <label class="control-label" style="margin-bottom: -8px">Bulk Profit</label>
-                                    <input type="text" readonly id="bulkprofit" name="bulkprofit" class="form-control">
-                                {{-- </div> --}}
-                            </div>
-                            <div class="col-md-6">
-                                {{-- <div class="form-group"> --}}
-                                <label class="control-label" style="margin-bottom: -8px">Unit Profit</label>
-                                <input type="text" readonly id="unitprofit" name="unitprofit" class="form-control">
-                            {{-- </div> --}}
-                          </div>
-                          </div>
-                          <br>
-                          <div class="row">
                             <div class="col-md-6">
                                 <label class="control-label" style="margin-bottom: -8px">Product Supplier</label>
                                 <select class="form-control" name="productsupplier">
@@ -132,6 +88,51 @@
                                     @endforeach  
                                 </select>
                             </div>
+                           
+                          </div>
+                          <br>
+                          <div class="row">
+                              {{-- <div class="col-md-6">
+                                <label class="control-label" style="margin-bottom: -8px">Product Quantity (Unit)</label>
+                                <input type="number" id="productunitqty" name="productunitqty" class="form-control" placeholder="Product Quantity (Bulk)">                                
+                            </div> --}}
+                           
+                            {{-- <div class="col-md-6">
+                                <label class="control-label" style="margin-bottom: -8px">Bulk Selling Price</label>
+                                <input type="number" id="bulksellingprice" name="bulksellingprice" class="form-control" placeholder="Bulk Selling Price">
+                            </div> --}}
+                          </div>
+                          {{-- <br> --}}
+                          <div class="row">
+                            <div class="col-md-6">
+                                <label class="control-label" style="margin-bottom: -8px">Buying Price (Bulk/Unit)</label>
+                              <input type="number" id="buyingprice" name="buyingprice" class="form-control" placeholder="Buying Price (Bulk/Unit)">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label" style="margin-bottom: -8px">Selling Price (Bulk/Unit)</label>
+                                <input type="number" id="sellingprice" name="sellingprice" class="form-control" placeholder="Selling Price">
+                            </div>
+                           
+                          </div>
+                          <br>
+                          <div class="row">
+                               {{-- <div class="col-md-6">
+                                <label class="control-label" style="margin-bottom: -8px">Unit Buying Price</label>
+                              <input type="number" id="unitbuyingprice" name="unitbuyingprice" class="form-control" placeholder="Unit Buying Price">
+                            </div> --}}                            
+                            {{-- <div class="col-md-6">
+                               
+                                <label class="control-label" style="margin-bottom: -8px">Unit Profit</label>
+                                <input type="text" readonly id="unitprofit" name="unitprofit" class="form-control">
+                          </div> --}}
+                          </div>
+                          {{-- <br> --}}
+                          <div class="row">
+                            <div class="col-md-6">
+                                <label class="control-label" style="margin-bottom: -8px">Profit (Bulk/Unit)</label>
+                                <input type="text" readonly id="profit" name="profit" class="form-control">
+                            </div>
+                            
                                 <div class="col-md-6">
                                     {{-- <div class="form-group"> --}}
                                     <label class="control-label" style="margin-bottom: -8px">Entered By</label>
@@ -163,23 +164,19 @@
 @section('script')
     <script>
         $(document).ready(function () {
-            $('#bulksellingprice').change(function () { 
-                if ( $('#bulkbuyingprice').val() !=='' &&  $('#bulksellingprice').val() !== '') {
-                    var buyingprice =  $('#bulkbuyingprice').val();
-                    var sellingprice =  $('#bulksellingprice').val();
+            $('#sellingprice').change(function () { 
+                if ( $('#buyingprice').val() !=='' &&  $('#sellingprice').val() !== '') {
+                    var buyingprice =  $('#buyingprice').val();
+                    var sellingprice =  $('#sellingprice').val();
                     var result = parseFloat(sellingprice) - parseFloat(buyingprice);
-                    $('#bulkprofit').val(parseFloat(result.toFixed(3)));
-                }
-            });
-            $('#unitsellingprice').change(function () { 
-                if ( $('#unitbuyingprice').val() !=='' &&  $('#unitsellingprice').val() !== '') {
-                    var buyingprice =  $('#unitbuyingprice').val();
-                    var sellingprice =  $('#unitsellingprice').val();
-                    var result = parseFloat(sellingprice) - parseFloat(buyingprice);
-                    $('#unitprofit').val(parseFloat(result.toFixed(3)));
+                    $('#profit').val(parseFloat(result.toFixed(3)));
                 }
             });
         });
     </script>
+
+
+
+
     
 @endsection

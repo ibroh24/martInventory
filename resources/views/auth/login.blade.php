@@ -15,7 +15,7 @@
                             <h2 class="">
                                 <a href="{{ route('login') }}" class="bg-waves-effect text-warning text-bold">
                                     {{-- FAAJS HANEEFAT VENTURES --}}
-                                    <span><img src="{{asset('images/faajs.png')}}" alt="" height="120" width="180"></span>
+                                    <span><img src="{{asset('images/faaajs.png')}}" alt="" height="120" width="180"></span>
                                 </a>
                             </h2>
                             <!--<h4 class="text-uppercase font-bold m-b-0">Sign In</h4>-->
