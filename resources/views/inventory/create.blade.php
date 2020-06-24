@@ -135,9 +135,10 @@
                             
                                 <div class="col-md-6">
                                     {{-- <div class="form-group"> --}}
-                                    <label class="control-label" style="margin-bottom: -8px">Entered By</label>
-                                    <input type="text" readonly name="enteredby" class="form-control" value="{{ Auth::user()->name }}">
+                                    <label class="control-label" style="margin-bottom: -8px">Re-Order Level</label>
+                                    <input type="text" name="reorderlevel" class="form-control">
                                 {{-- </div> --}}
+                                <input type="hidden" readonly class="form-control" name="enteredby"  value="{{Auth::user()->name}}" id="enteredby">
                             </div>
                           </div>
                           <br><br><br>

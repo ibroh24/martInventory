@@ -42,67 +42,62 @@
                               {{ session('success') }}
                           </div> 
                         @endif
-                        <div class="row">
-                          <div class="col-md-6">
-                            <label class="control-label" style="margin-bottom: -8px">Item Category</label>
-                            <select class="form-control" id="itemcategory" name="itemcategory">
-                                <option>Select Item Category</option>
-                                @foreach ($productCategory as $category)
-                                    <option class="m-t-20" value="{{$category->categoryname}}">{{$category->categoryname}}</option>    
-                                @endforeach  
-                            </select>
 
-                            {{-- <label class="control-label" style="margin-bottom: -8px">Sales Type</label>
-                            <select class="form-control" id="itemtype" name="itemtype">
-                                <option>Select Sales Type</option>
-                                <option class="m-t-20" value="Bulk">Bulk</option>    
-                                <option class="m-t-20" value="Unit">Unit</option>    
-                            </select> --}}
-                          </div>
-                          <div class="col-md-6">
-                            <label class="control-label" style="margin-bottom: -8px">Item Name</label>
-                            <select class="form-control" id="itemname" name="itemname">
-                                {{-- <option>Select Item</option>
-                                @foreach ($products as $product)
-                                    <option class="m-t-20" value="{{$product->productname}}">{{$product->productname}}</option>    
-                                @endforeach   --}}
-                            </select>
-                          </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <label class="control-label" style="margin-bottom: -8px">Item Price (Unit/Bulk)</label>
-                            <input type="text" id="itemprice" readonly name="itemprice" class="form-control" placeholder="Item Price">
-                          </div>
-                          <div class="col-md-6">
-                            <label class="control-label" style="margin-bottom: -8px">Item Quantity</label>
-                                <input type="number" name="itemqty" id="itemqty" class="form-control" placeholder="Item Quantity">
-                          </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label class="control-label" style="margin-bottom: -8px">Total Pay</label>
-                                <input type="number" readonly name="totalprice" id="totalprice" class="form-control" placeholder="Total Pay">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="control-label" style="margin-bottom: -8px">Sold By</label>
-                                <input type="text" readonly name="soldby" class="form-control" value="{{ Auth::user()->name }}">
-                            </div>
-                          </div>
-                          <br>
-                          <br><br>
-                          <div class="form-group m-t-20" style="margin-left: 70%">
-                            {{-- <div> --}}
+                        <table class="table table-bordered table-colored table-info" id="dynamicTable">
+                            <thead>
+                            <tr>
+                                <th>Item Cat</th>
+                                <th>Item Name</th>
+                                <th>Item Price</th>
+                                <th>Item Qty</th>
+                                <th>Total Pay</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+            
+            
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select class="form-control" id="itemcategory" name="itemcategory">
+                                            <option>Select Item Category</option>
+                                            @foreach ($productCategory as $category)
+                                                <option class="m-t-20" value="{{$category->categoryname}}">{{$category->categoryname}}</option>    
+                                            @endforeach  
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" id="itemname" name="itemname">
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="text" id="itemprice" readonly name="itemprice" class="form-control" placeholder="Item Price">
+                                    </td>
+                                    <td>
+                                        <input type="number" name="itemqty" id="itemqty" class="form-control" placeholder="Item Quantity">
+                                    </td>
+                                    <td>
+                                        <input type="number" readonly name="totalprice" id="totalprice" class="form-control" placeholder="Total Pay">
+                                    </td>
+                                    <td>
+                                        <button type="button" name="add" id="add" class="btn btn-success">
+                                            Add More
+                                        </button>
+                                    </td>
+                                    
+                                </tr>
+                            </tbody>
+                        </table>
+
+                          {{-- <br><br> --}}
+                            <div class="form-group m-t-20">
                                 <button type="submit" class="btn btn-info waves-effect waves-light w-md">
                                     Save
                                 </button>
                                 <a href="{{route('inventory.view')}}" type="reset" class="btn btn-warning waves-effect m-l-5 w-md">
                                     Cancel
                                 </a>
-                            {{-- </div> --}}
-                        </div>
+                            </div>
                       </form>
                 </div>
             </div>
@@ -155,6 +150,18 @@
                 
                     });
                 });
+            });
+            let i = 0;
+            $('#add').click(function() { 
+                ++i;
+
+                $(document).on('click', '.remove-tr', function(){  
+                    $(this).parents('tr').remove();
+                });                
+                $('#dynamicTable').append('<tr><td><select class="form-control" id="itemcategory" name="itemcategory"><option>Select Item Category</option>@foreach($productCategory as $category)<option class="m-t-20" value="{{$category->categoryname}}">{{$category->categoryname}}</option>@endforeach</select></td><td><select class="form-control" id="itemname" name="itemname"></select></td><td><input type="text" id="itemprice" readonly name="itemprice" class="form-control" placeholder="Item Price"></td><td><input type="number" name="itemqty" id="itemqty" class="form-control" placeholder="Item Quantity"></td><td><input type="number" readonly name="totalprice" id="totalprice" class="form-control" placeholder="Total Pay"></td><td><button type="button" class="btn btn-danger remove-tr">Remove</button></td></tr>');
+                
+                
+                
             });
         });
     </script>

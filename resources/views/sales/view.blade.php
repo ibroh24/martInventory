@@ -51,23 +51,20 @@
                 <tr>
                     @if (Auth::user()->isAdmin)
                     <td>
-                       
-                        <center>
-                            <a href="{{ route('sales.edit', ['id'=>$sales->itemslug]) }}" title="Edit {{$sales->itemname}} Data" class="btn btn-sm btn-success  glyphicon glyphicon-edit" ></a>                            
-                        </center>
+                       <a href="{{ route('sales.edit', ['id'=>$sales->itemslug]) }}" title="Edit {{$sales->itemname}} Data" class="btn btn-sm btn-success  glyphicon glyphicon-edit" ></a>                            
+                        
                         {{-- @else
                             <a href="{{ route('sales.edit', ['id'=>$sales->itemslug]) }}" title="Edit {{$sales->itemname}} Data" class="btn btn-sm btn-success glyphicon glyphicon-edit" ></a> --}}
                        
                         {{-- @if (Auth::user()->isAdmin)
                             <a onclick=" return confirm('Are you sure you want to delete {{$sales->itemname}} Data')" title="Delete {{$sales->itemname}} Data"  href="{{ route('sales.destroy', ['id'=>$sales->itemslug])}}" class="btn btn-sm btn-danger glyphicon glyphicon-trash"></a>
                         @endif --}}
+                        <a onclick=" return confirm('Are you sure you want to delete {{$sales->itemname}} Data')" title="Delete {{$sales->itemname}} Data"  href="{{ route('sales.destroy', ['id'=>$sales->itemslug])}}" class="btn btn-sm btn-danger glyphicon glyphicon-trash"></a>
                     </td>
                     @endif
                     <td>{{$sales->itemname}}</td>
-                    {{-- <td>{{$sales->itemtype}}</td> --}}
                     <td>{{$sales->itemqty}}</td>
-                    {{-- <td>{{$sales->itemprice}}</td>
-                    <td>{{$sales->totalprice}}</td> --}}
+                   
                     <td>{{number_format($sales->itemprice, 2)}}</td>
                     <td>{{number_format($sales->totalprice, 2)}}</td>
                     <td>{{$sales->created_at->format('l, F d, Y')}}</td>

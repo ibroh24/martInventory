@@ -86,3 +86,4 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 Route::get('/getProduct/{selectedCats}', 'SalesController@getProduct');
 Route::get('/getProductPrice/{selectedItem}', 'SalesController@getProductPrice');
 Route::get('/getProductRemain/{selectedCats}', 'InventoryController@getProductRemain');
+Route::get('/addMoreField', 'SalesController@addMoreField');

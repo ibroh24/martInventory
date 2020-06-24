@@ -55,7 +55,7 @@
                             <a href="{{ route('stock.show', ['id'=>$inventory->productslug]) }}" title="Edit {{$inventory->productname}} Data" class="btn btn-sm btn-success glyphicon glyphicon-stats"></a>
                         @endif
                         @if (Auth::user()->isAdmin)
-                            <a title="Print {{$inventory->productname}} Data"  href="{{ route('stock.print', ['id'=>$inventory->productslug])}}" class="btn btn-sm btn-primary glyphicon glyphicon-print"></a>
+                            <a title="Print {{$inventory->productname}} Data"  href="{{ route('stock.print', ['id'=>$inventory->productslug])}}" target="_Blank" class="btn btn-sm btn-primary glyphicon glyphicon-print"></a>
                         @endif
                     </td>
                     <td>{{$inventory->productname}}</td>

@@ -25,7 +25,7 @@
                 <i class="mdi mdi-chart-areaspline widget-two-icon"></i>
                 <div class="wigdet-two-content text-white">
                     <p class="m-0 text-uppercase font-600 font-secondary text-overflow" title="Statistics">Total Product</p>
-                    <h2 class="text-white"><span data-plugin="counterup">{{$products[0]->allProduct}}</span> <small><i class="mdi mdi-arrow-up text-success"></i></small></h2>
+                    <h2 class="text-white"><span data-plugin="counterup">{{$products[0]->allProduct ? $products[0]->allProduct : ''}}</span> <small><i class="mdi mdi-arrow-up text-danger"></i></small></h2>
                     <p class="m-0"><b></b></p>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                 <i class="mdi mdi-layers widget-two-icon"></i>
                 <div class="wigdet-two-content text-white">
                     <p class="m-0 text-uppercase font-600 font-secondary text-overflow" title="User This Month">Sales This Month</p>
-                    <h2 class="text-white"><span data-plugin="counterup">{{number_format($totalSales,2, '.', ',')}} </span> <small><i class="mdi mdi-arrow-up text-success"></i></small></h2>
+                    <h2 class="text-white"><span data-plugin="counterup">{{$totalSales ? number_format($totalSales,2, '.', ',' ) : ''}} </span> <small><i class="mdi mdi-arrow-up text-success"></i></small></h2>
                     {{-- <p class="m-0"><b></b></p> --}}
                 </div>
             </div>
@@ -44,10 +44,10 @@
 
         <div class="col-lg-3 col-md-6">
             <div class="card-box widget-box-two widget-two-danger">
-                <i class="mdi mdi-access-point-network widget-two-icon"></i>
+                <i class=" mdi mdi-cash-multiple widget-two-icon"></i>
                 <div class="wigdet-two-content text-white">
-                    <p class="m-0 text-uppercase font-600 font-secondary text-overflow" title="Statistics">Most Sold Item</p>
-                    <h2 class="text-white"><span data-plugin="counterup">{{$mostItem}}</span> <small><i class="mdi mdi-arrow-up text-success"></i></small></h2>
+                    <p class="m-0 text-uppercase font-600 font-secondary text-overflow" title="Statistics">Today Profit</p>
+                    <h2 class="text-white"><span data-plugin="counterup">{{$dailyTotalProfit->todayprofit ?number_format($dailyTotalProfit->todayprofit, 2, '.', ',') : ''}}</span> <small><i class="mdi mdi-arrow-up text-success"></i></small></h2>
                     {{-- <p class="m-0"><b>Last:</b> 30.4k</p> --}}
                 </div>
             </div>
@@ -58,7 +58,7 @@
                 <i class="mdi mdi-account-convert widget-two-icon"></i>
                 <div class="wigdet-two-content text-white">
                     <p class="m-0 text-uppercase font-600 font-secondary text-overflow" title="User Today">Total User Today</p>
-                    <h2 class="text-white"><span data-plugin="counterup">{{$users[0]->allUser}} </span> <small><i class="mdi mdi-arrow-down text-danger m-b-5"></i></small></h2>
+                    <h2 class="text-white"><span data-plugin="counterup">{{$users[0]->allUser}} </span> <small><i class="mdi mdi-arrow-up text-danger m-b-5"></i></small></h2>
                     {{-- <p class="m-0"><b>Last:</b> 1250</p> --}}
                 </div>
             </div>

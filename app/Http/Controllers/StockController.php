@@ -91,10 +91,13 @@ class StockController extends Controller
                             ->get();
         $totalSum = 0;
         $totalQty = 0;
+        $totalProfit = 0;
+        // dd($salesDetail);
         foreach ($salesDetail as $value) {
             // dd($value->totalprice);
             $totalSum += $value->totalprice;
             $totalQty += $value->itemqty;
+            $totalProfit += $value->totalprofit;
         }
         // dd($getTotalSum);
         // dd($salesDetail);
@@ -102,6 +105,7 @@ class StockController extends Controller
         ->with('salesDetail', $salesDetail)
         ->with('totalSum', $totalSum)
         ->with('totalQty', $totalQty)
+        ->with('totalProfit', $totalProfit)
         ->with('productDetail', $productDetail);
     }
 

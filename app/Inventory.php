@@ -10,6 +10,6 @@ class Inventory extends Model
     use Notifiable;
 
     protected $fillable = [
-        'productname', 'productdescription', 'productcategory', 'sellingprice', 'buyingprice', 'profit', 'enteredby', 'productqty', 'productsupplier', 'productuom', 'productslug', 'productremain'
+        'productname', 'productdescription', 'productcategory', 'sellingprice', 'buyingprice', 'profit', 'enteredby', 'productqty', 'productsupplier', 'productuom', 'productslug', 'productremain', 'reorderlevel'
     ];
 }

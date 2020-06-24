@@ -29,10 +29,13 @@ class InventoryController extends Controller
 
     public function lowItems()
     {
-        $inventoryDatas = DB::table('inventories')
-                                ->where('productremain', '<', 20)
-                                ->get();
-        
+        $inventoryDatas = Inventory::where('productremain', '<=', '2')->get();
+        // $inventoryDatas = DB::table('inventories')
+        //                         ->select('*')
+        //                        ->where('productremain', '<=', 'reorderlevel')
+        //                         // ->orwhere('productremain', '<=', '10')
+        //                         ->get();
+        // dd($inventoryDatas);
         // View::share('inventoryDatas', $inventoryDatas);
         return view('inventory.viewupdate')->with('inventoryDatas', $inventoryDatas);
     }
@@ -80,7 +83,7 @@ class InventoryController extends Controller
                 'productuom' => $request->productuom,
                 'enteredby' => $request->enteredby,
                 'productqty' => $request->productqty,
-                // 'productunitqty' => $request->productunitqty,
+                'reorderlevel' => $request->reorderlevel,
 
                 'productremain' => $request->productqty,
                 // 'productunitremain' => $request->productunitqty,
@@ -107,6 +110,7 @@ class InventoryController extends Controller
                     'enteredby' => $request->enteredby,
                     'productqty' => $request->productqty,
                     'productremain' => $request->productqty,
+                    'reorderlevel' => $request->reorderlevel,
                     'productsupplier' => $request->productsupplier,
                     'productdescription' => $request->productdescription,
                     'productslug' => str_slug($request->productname)
@@ -178,6 +182,7 @@ class InventoryController extends Controller
         $updateProduct->productuom = $request->productuom;
         $updateProduct->enteredby = $request->enteredby;        
         $updateProduct->productqty = $request->productqty; 
+        $updateProduct->reorderlevel = $request->reorderlevel; 
         $updateProduct->productremain = $request->productqty;
         $updateProduct->productsupplier = $request->productsupplier;
         $updateProduct->productdescription = $request->productdescription;
@@ -220,6 +225,7 @@ class InventoryController extends Controller
                     'productuom' => $request->productuom,
                     'enteredby' => $request->enteredby,
                     'productqty' => $request->productqty,
+                    'reorderlevel' => $request->reorderlevel,
                     'productremain' => $request->productqty,
                     'productsupplier' => $request->productsupplier,
                     'productdescription' => $request->productdescription,

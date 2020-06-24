@@ -39,7 +39,7 @@
                     </tr>
                 </table>
                 <hr>
-                <h4 class="m-t-0 header-title text-center"><b>Product Detail</b></h4>
+                <h4 class="m-t-0 header-title text-center text-uppercase"><b>Product Detail</b></h4>
                 <hr>
 
                 <table class="table table-bordered table-responsive" >
@@ -70,7 +70,7 @@
                 </table>
                 <hr>
                 {{-- <br> --}}
-                <h4 class="m-t-0 header-title text-center"><b>Product and Sales Detail</b></h4>
+                <h4 class="m-t-0 header-title text-center text-uppercase"><b>Product and Sales Detail</b></h4>
                 <hr>
                 <table class="table table-bordered">
                     <thead class="m-t-20" style="background-color:#00004D; color: #fff">
@@ -79,6 +79,7 @@
                             <th class="text-center">Sold By</th>
                             <th class="text-center">Sales Qty</th>
                             <th class="text-center">Total Price</th>
+                            <th class="text-center">Total Profit</th>
                             <th class="text-center">Sold Date</th>
                             <th class="text-center">Sold Time</th>
                         </tr>
@@ -92,6 +93,7 @@
                             {{-- <td>{{$sales->itemtype}}</td> --}}
                             <td>{{$sales->itemqty}}</td>
                             <td>{{$sales->totalprice}}</td>
+                            <td>{{$sales->totalprofit}}</td>
                             <td>{{date('l, F d, Y', strtotime($sales->created_at))}} </td> 
                             <td>{{date('h:i a', strtotime($sales->created_at))}}</td>
                             {{-- <td>{{date('l, F d, Y', strtotime($sales->updated_at))}} at {{date('h:i a', strtotime($sales->updated_at))}}</td> --}}
@@ -99,11 +101,11 @@
                         </tr>
                         @endforeach
                         <tr style="height:10px;">
-                            <td class="text-center"><b>Total</b></td>
+                            <td class="text-center text-uppercase"><b>Total</b></td>
                             <td>&nbsp;</td>
-                            <td class="text-center"><b>{{$totalQty}}</b></td>
-                            <td class="text-center"><b>{{number_format($totalSum,2,'.',',')}}</b></td>
-                            <td>&nbsp;</td>
+                            <td class="text-center"><b>{{$totalQty ? $totalQty : ''}}</b></td>
+                            <td class="text-center"><b>{{$totalSum ? number_format($totalSum,2,'.',',') : ''}}</b></td>
+                            <td class="text-center"><b>{{$totalProfit ? number_format($totalProfit,2,'.',',') : ''}}</b></td>
                             <td>&nbsp;</td>
                         </tr>
                         @else

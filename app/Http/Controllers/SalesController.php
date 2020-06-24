@@ -72,62 +72,76 @@ class SalesController extends Controller
         // dd(strtolower($request->itemtype));
         $itemSold = $request->itemname;
         $itemQty = $request->itemqty;
+        // $itemID = $request->id;
         $itemType = strtolower($request->itemtype);
         $inventoryQty = Inventory::where('productname', $itemSold)->first();
         $currentQty = $inventoryQty->productremain;
-        // $currentUnitQty = $inventoryQty->productremain;
+        $productProfit = $inventoryQty->profit;
+        
         $saveSales->save();
         $saveSalesBackup = '';
         if($saveSales){
-            // if($itemType == 'unit'){
-            DB::table('inventories')
-                ->join('sales', 'sales.itemname', '=', 'inventories.productname')
-                ->where([
-                    ['sales.itemname', '=', $itemSold],
-                    ['inventories.productname', '=', $itemSold]
-                ])
-                ->update([
-                    'inventories.productremain' => $currentQty - $itemQty,
-                    'sales.remainitem' => $currentQty - $itemQty
-                    ]);
-
-                // updating inventory_backups
-                DB::table('inventory_backups')
-                ->join('sales', 'sales.itemname', '=', 'inventory_backups.productname')
-                ->where([
-                    ['sales.itemname', '=', $itemSold],
-                    ['inventory_backups.productname', '=', $itemSold]
-                ])
-                ->update([
-                    'inventory_backups.productremain' => $currentQty - $itemQty,
-                    'sales.remainitem' => $currentQty - $itemQty
-                ]);
-
-            /* }elseif ($itemType == 'bulk') {
+            $getID = DB::table('sales')
+                        ->select('id')
+                        ->where(['itemname' => $itemSold])
+                        ->orderby('created_at', 'desc')
+                        ->limit('1')
+                        ->first();
+            $itemID = $getID->id;
+            // dd($itemID);
+            if($itemID){
                 DB::table('inventories')
-                ->join('sales', 'sales.itemname', '=', 'inventories.productname')
-                ->where([
-                    ['sales.itemname', '=', $itemSold, ],
-                    ['inventories.productname', '=', $itemSold, ]
-                ])
-                ->update([
-                    'inventories.productbulkremain' => $currentBulkQty - $itemQty,
-                    'sales.remainitem' => $currentBulkQty - $itemQty
+                    ->join('sales', 'sales.itemname', '=', 'inventories.productname')
+                    ->where([
+                        ['sales.itemname', '=', $itemSold],
+                        ['sales.id', '=', $itemID],
+                        ['inventories.productname', '=', $itemSold]
+                    ])
+                    ->update([
+                        'inventories.productremain' => $currentQty - $itemQty,
+                        'sales.remainitem' => $currentQty - $itemQty,
+                        'sales.totalprofit' => $productProfit * $itemQty
+                        ]);
+
+                    // updating inventory_backups
+                    DB::table('inventory_backups')
+                    ->join('sales', 'sales.itemname', '=', 'inventory_backups.productname')
+                    ->where([
+                        ['sales.itemname', '=', $itemSold],
+                        ['sales.id', '=', $itemID],
+                        ['inventory_backups.productname', '=', $itemSold]
+                    ])
+                    ->update([
+                        'inventory_backups.productremain' => $currentQty - $itemQty,
+                        'sales.remainitem' => $currentQty - $itemQty,
+                        'sales.totalprofit' => $productProfit * $itemQty
                     ]);
 
-                // updating inventory_backups
-                DB::table('inventory_backups')
-                ->join('sales', 'sales.itemname', '=', 'inventory_backups.productname')
-                ->where([
-                    ['sales.itemname', '=', $itemSold, ],
-                    ['inventory_backups.productname', '=', $itemSold, ]
-                ])
-                ->update([
-                    'inventory_backups.productbulkremain' => $currentBulkQty - $itemQty,
-                    'sales.remainitem' => $currentBulkQty - $itemQty
-                    ]);
-            }   */
+                /* }elseif ($itemType == 'bulk') {
+                    DB::table('inventories')
+                    ->join('sales', 'sales.itemname', '=', 'inventories.productname')
+                    ->where([
+                        ['sales.itemname', '=', $itemSold, ],
+                        ['inventories.productname', '=', $itemSold, ]
+                    ])
+                    ->update([
+                        'inventories.productbulkremain' => $currentBulkQty - $itemQty,
+                        'sales.remainitem' => $currentBulkQty - $itemQty
+                        ]);
 
+                    // updating inventory_backups
+                    DB::table('inventory_backups')
+                    ->join('sales', 'sales.itemname', '=', 'inventory_backups.productname')
+                    ->where([
+                        ['sales.itemname', '=', $itemSold, ],
+                        ['inventory_backups.productname', '=', $itemSold, ]
+                    ])
+                    ->update([
+                        'inventory_backups.productbulkremain' => $currentBulkQty - $itemQty,
+                        'sales.remainitem' => $currentBulkQty - $itemQty
+                        ]);
+                }   */
+            }
             $insertSalesBackup = SalesBackup::create(
                 [
                     'itemname' => $request->itemname,
@@ -147,10 +161,12 @@ class SalesController extends Controller
                 ->join('sales', 'sales.itemname', '=', 'sales_backups.itemname')
                 ->where([
                     ['sales.itemname', '=', $itemSold],
+                    ['sales.id', '=', $itemID],
                     ['sales_backups.itemname', '=', $itemSold]
                 ])
                 ->update([
                     'sales_backups.remainitem' => $currentQty - $itemQty,
+                    'sales_backups.totalprofit' => $productProfit * $itemQty
 
                     ]);
 
@@ -264,7 +280,9 @@ class SalesController extends Controller
                     ['sales.itemname', '=', $itemSold, ],
                     ['inventories.productname', '=', $itemSold, ]
                 ])
-                ->update(['inventories.productbulkremain' => $currentBulkQty - $itemQty]);
+                ->update([
+                    'inventories.productbulkremain' => $currentBulkQty - $itemQty
+                    ]);
             }
 
         }
@@ -274,12 +292,15 @@ class SalesController extends Controller
         return redirect()->route('sales.view');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // dynamic adding more fields
+    public function addMoreField()
+    {
+        
+    }
+    
+    
+
+
     public function destroy($id)
     {
         //

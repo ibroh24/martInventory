@@ -204,19 +204,12 @@
 
                         <ul>
                         	{{-- <li class="menu-title">Data Inputs And Analysis</li> --}}
-
-                            <li>
-                                <a href="{{ route('dashboard') }}" class="waves-effect"><i class="fa fa-dashboard"></i><span> Dashboard </span></a>
-                            </li>
-                            {{-- <li class="has_sub">
-                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-view-dashboard"></i><span class="badge badge-success pull-right">2</span> <span> Dashboard </span> </a>
-                                <ul class="list-unstyled">
-                                    <li><a href="index.html">Dashboard 1</a></li>
-                                    <li><a href="dashboard_2.html">Dashboard 2</a></li>
-                                </ul>
-                            </li> --}}
-
-
+                            @if (Auth::user()->isAdmin)
+                                <li>
+                                    <a href="{{ route('dashboard') }}" class="waves-effect"><i class="fa fa-dashboard"></i><span> Dashboard </span></a>
+                                </li>    
+                            @endif
+                            
                             <li class="has_sub">
                                 <a href="javascript:void(0);" class="waves-effect"><i class=" mdi mdi-chart-histogram"></i><span> Inventory </span> <span class="menu-arrow"></span></a>
                                 <ul class="list-unstyled">

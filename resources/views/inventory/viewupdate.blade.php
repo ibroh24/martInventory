@@ -30,8 +30,8 @@
                 <tr>
                     <th>Action</th>
                     <th>Product Name</th>
-                    <th>Bulk Remain Qty</th>
-                    <th>Unit Remain Qty</th>
+                    <th>Remain Qty</th>
+                    <th>Re-Order Level</th>
                     <th>Product Category</th>
                     {{-- <th>Bulk Remain</th>
                     <th>Unit Remain</th> --}}
@@ -47,20 +47,20 @@
                     {{-- {{dd($inventory)}} --}}
                 <tr>
                     <td>
-                        @if (!Auth::user()->isAdmin)
+                        @if (Auth::user()->isAdmin)
                             <center>
                                 <a href="{{ route('inventory.edit', ['id'=>$inventory->productslug]) }}" title="Edit {{$inventory->productname}} Data" class="btn btn-sm btn-success  glyphicon glyphicon-edit" ></a>                            
                             </center>
-                        @else
-                            <a href="{{ route('inventory.edit', ['id'=>$inventory->productslug]) }}" title="Edit {{$inventory->productname}} Data" class="btn btn-sm btn-success glyphicon glyphicon-edit" ></a>
+                        {{-- @else
+                            <a href="{{ route('inventory.edit', ['id'=>$inventory->productslug]) }}" title="Edit {{$inventory->productname}} Data" class="btn btn-sm btn-success glyphicon glyphicon-edit" ></a> --}}
                         @endif
-                        @if (Auth::user()->isAdmin)
+                        {{-- @if (Auth::user()->isAdmin)
                             <a onclick=" return confirm('Are you sure you want to delete {{$inventory->productname}} Data')" title="Delete {{$inventory->productname}} Data"  href="{{ route('inventory.destroy', ['id'=>$inventory->productslug])}}" class="btn btn-sm btn-danger glyphicon glyphicon-trash"></a>
-                        @endif
+                        @endif --}}
                     </td>
                     <td>{{$inventory->productname}}</td>
-                    <td>{{$inventory->productbulkremain}}</td>
-                    <td>{{$inventory->productunitremain}}</td>
+                    <td>{{$inventory->productremain}}</td>
+                    <td>{{$inventory->reorderlevel}}</td>
                     <td>{{$inventory->productcategory}}</td>
                     {{-- <td>{{(int)number_format($inventory->bulksellingprice, 2)}}</td>
                     <td>{{(int)number_format($inventory->unitsellingprice, 2)}}</td> --}}
