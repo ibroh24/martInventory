@@ -22,7 +22,7 @@ class CreateSalesTable extends Migration
             $table->double('totalprice', 15,2);
             $table->string('itemqty');
             $table->string('soldby');
-            $table->string('itemtype')->nullable();
+            // $table->string('itemtype')->nullable();
             $table->string('itemslug');
             $table->timestamps();
         });

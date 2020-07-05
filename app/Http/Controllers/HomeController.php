@@ -29,7 +29,7 @@ class HomeController extends Controller
         $inventoryDatas = DB::table('inventories')
                             ->where('productremain', '<=', '2')
                             ->get();
-
+        // dd($inventoryDatas);
         $products = DB::table('inventories')
                         ->select(DB::raw("count(*) as allProduct"))
                         ->get();

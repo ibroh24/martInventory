@@ -59,7 +59,7 @@
                         {{-- @if (Auth::user()->isAdmin)
                             <a onclick=" return confirm('Are you sure you want to delete {{$sales->itemname}} Data')" title="Delete {{$sales->itemname}} Data"  href="{{ route('sales.destroy', ['id'=>$sales->itemslug])}}" class="btn btn-sm btn-danger glyphicon glyphicon-trash"></a>
                         @endif --}}
-                        <a onclick=" return confirm('Are you sure you want to delete {{$sales->itemname}} Data')" title="Delete {{$sales->itemname}} Data"  href="{{ route('sales.destroy', ['id'=>$sales->itemslug])}}" class="btn btn-sm btn-danger glyphicon glyphicon-trash"></a>
+                        {{-- <a onclick=" return confirm('Are you sure you want to delete {{$sales->itemname}} Data')" title="Delete {{$sales->itemname}} Data"  href="{{ route('sales.destroy', ['id'=>$sales->itemslug])}}" class="btn btn-sm btn-danger glyphicon glyphicon-trash"></a> --}}
                     </td>
                     @endif
                     <td>{{$sales->itemname}}</td>

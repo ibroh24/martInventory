@@ -9,6 +9,11 @@
         <!-- App title -->
         <title>@yield('title')</title>
         <!-- Scripts -->
+
+        {{-- jquery smart search --}}
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        
+        
          <!-- Sweet Alert -->
          <link href="{{asset('plugins/bootstrap-sweetalert/sweet-alert.css')}}" rel="stylesheet" type="text/css">
         <link href="{{asset('plugins/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet">
@@ -35,6 +40,8 @@
         <link href="{{asset('assets/css/menu.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{asset('assets/css/responsive.css')}}" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="{{asset('plugins/switchery/switchery.min.css')}}">
+
+        
         
           <!-- Styles -->
         {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
@@ -47,6 +54,7 @@
         <![endif]-->
 
         <script src="{{asset('assets/js/modernizr.min.js')}}"></script>
+        
 
     </head>
 
@@ -396,6 +404,8 @@
         <script>
             var resizefunc = [];
         </script>
+        
+        
 
         <!-- jQuery  -->
         <script src="{{asset('assets/js/jquery.min.js')}}"></script>
@@ -407,6 +417,10 @@
         <script src="{{asset('assets/js/jquery.slimscroll.js')}}"></script>
         <script src="{{asset('assets/js/jquery.scrollTo.min.js')}}"></script>
         <script src="{{asset('plugins/switchery/switchery.min.js')}}"></script>
+
+        {{-- <script src="{{asset('assets/js/jautocalc.min.js')}}"></script>
+        <script src="{{asset('assets/js/jautocalc.js')}}"></script> --}}
+
 
 
         <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
@@ -426,6 +440,7 @@
         <script src="{{asset('plugins/datatables/dataTables.scroller.min.js')}}"></script>
         <script src="{{asset('plugins/datatables/dataTables.colVis.js')}}"></script>
         <script src="{{asset('plugins/datatables/dataTables.fixedColumns.min.js')}}"></script>
+        
 
          <!-- init -->
          <script src="{{asset('assets/pages/jquery.datatables.init.js')}}"></script>
@@ -433,11 +448,12 @@
         <!-- isotope plugin -->
         <script type="text/javascript" src="{{asset('plugins/isotope/js/isotope.pkgd.min.js')}}"></script>
 
-
+        
          <!-- Counter js  -->
          <script src="{{asset('plugins/waypoints/jquery.waypoints.min.js')}}"></script>
          <script src="{{asset('plugins/counterup/jquery.counterup.min.js')}}"></script>
  
+        
          <!-- Flot chart js -->
          <script src="{{asset('plugins/flot-chart/jquery.flot.min.js')}}"></script>
          <script src="{{asset('plugins/flot-chart/jquery.flot.time.js')}}"></script>
@@ -446,6 +462,7 @@
          <script src="{{asset('plugins/flot-chart/jquery.flot.pie.js')}}"></script>
          <script src="{{asset('plugins/flot-chart/jquery.flot.selection.js')}}"></script>
          <script src="{{asset('plugins/flot-chart/jquery.flot.crosshair.js')}}"></script>
+         
  
          <script src="{{asset('plugins/moment/moment.js')}}"></script>
          <script src="{{asset('plugins/bootstrap-daterangepicker/daterangepicker.js')}}"></script>
@@ -461,6 +478,7 @@
          <!-- App js -->
          <script src="{{asset('assets/js/jquery.core.js')}}"></script>
          <script src="{{asset('assets/js/jquery.app.js')}}"></script>
+         
          @yield('script')
          <script>
         
@@ -473,7 +491,8 @@
             });
 
         </script>
-
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     </div>
     </body>
 </html>

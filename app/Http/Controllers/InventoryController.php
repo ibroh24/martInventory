@@ -29,13 +29,13 @@ class InventoryController extends Controller
 
     public function lowItems()
     {
-        $inventoryDatas = Inventory::where('productremain', '<=', '2')->get();
+         $inventoryDatas = Inventory::where('productremain', '=', '10')->get();
         // $inventoryDatas = DB::table('inventories')
         //                         ->select('*')
         //                        ->where('productremain', '<=', 'reorderlevel')
         //                         // ->orwhere('productremain', '<=', '10')
         //                         ->get();
-        // dd($inventoryDatas);
+        dd($inventoryDatas);
         // View::share('inventoryDatas', $inventoryDatas);
         return view('inventory.viewupdate')->with('inventoryDatas', $inventoryDatas);
     }

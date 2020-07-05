@@ -10,6 +10,8 @@ use App\Inventory;
 use App\SalesBackup;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class SalesController extends Controller
 {
@@ -48,161 +50,142 @@ class SalesController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'itemname' => 'required',
-            // 'itemtype' => 'required',
-            'itemprice' => 'required|numeric',
-            'itemqty' => 'required|numeric',
-            'totalprice' => 'required|numeric',
-            'soldby' => 'required'
-        ]);
+        $datas = $request->all();
+    //    dd($datas);
+        $removeToken = array_shift($datas);
+       
+        $category = count($datas['itemcategory']);
+        // dd($category);
+        $count = 0;
+        $rows = array();
 
-        $saveSales = Sales::create(
-            [
-                'itemname' => $request->itemname,
-                'itemcategory' => $request->itemcategory,
-                'itemprice' => $request->itemprice,
-                'itemqty' => $request->itemqty,
-                'totalprice' => $request->totalprice,
-                'soldby' => $request->soldby,
-                'itemslug' => str_slug($request->itemname)
-            ] 
-        );
-        
-        // dd(strtolower($request->itemtype));
-        $itemSold = $request->itemname;
-        $itemQty = $request->itemqty;
-        // $itemID = $request->id;
-        $itemType = strtolower($request->itemtype);
-        $inventoryQty = Inventory::where('productname', $itemSold)->first();
-        $currentQty = $inventoryQty->productremain;
-        $productProfit = $inventoryQty->profit;
-        
-        $saveSales->save();
-        $saveSalesBackup = '';
-        if($saveSales){
-            $getID = DB::table('sales')
-                        ->select('id')
-                        ->where(['itemname' => $itemSold])
-                        ->orderby('created_at', 'desc')
-                        ->limit('1')
-                        ->first();
-            $itemID = $getID->id;
-            // dd($itemID);
-            if($itemID){
-                DB::table('inventories')
-                    ->join('sales', 'sales.itemname', '=', 'inventories.productname')
-                    ->where([
-                        ['sales.itemname', '=', $itemSold],
-                        ['sales.id', '=', $itemID],
-                        ['inventories.productname', '=', $itemSold]
-                    ])
-                    ->update([
-                        'inventories.productremain' => $currentQty - $itemQty,
-                        'sales.remainitem' => $currentQty - $itemQty,
-                        'sales.totalprofit' => $productProfit * $itemQty
-                        ]);
-
-                    // updating inventory_backups
-                    DB::table('inventory_backups')
-                    ->join('sales', 'sales.itemname', '=', 'inventory_backups.productname')
-                    ->where([
-                        ['sales.itemname', '=', $itemSold],
-                        ['sales.id', '=', $itemID],
-                        ['inventory_backups.productname', '=', $itemSold]
-                    ])
-                    ->update([
-                        'inventory_backups.productremain' => $currentQty - $itemQty,
-                        'sales.remainitem' => $currentQty - $itemQty,
-                        'sales.totalprofit' => $productProfit * $itemQty
-                    ]);
-
-                /* }elseif ($itemType == 'bulk') {
-                    DB::table('inventories')
-                    ->join('sales', 'sales.itemname', '=', 'inventories.productname')
-                    ->where([
-                        ['sales.itemname', '=', $itemSold, ],
-                        ['inventories.productname', '=', $itemSold, ]
-                    ])
-                    ->update([
-                        'inventories.productbulkremain' => $currentBulkQty - $itemQty,
-                        'sales.remainitem' => $currentBulkQty - $itemQty
-                        ]);
-
-                    // updating inventory_backups
-                    DB::table('inventory_backups')
-                    ->join('sales', 'sales.itemname', '=', 'inventory_backups.productname')
-                    ->where([
-                        ['sales.itemname', '=', $itemSold, ],
-                        ['inventory_backups.productname', '=', $itemSold, ]
-                    ])
-                    ->update([
-                        'inventory_backups.productbulkremain' => $currentBulkQty - $itemQty,
-                        'sales.remainitem' => $currentBulkQty - $itemQty
-                        ]);
-                }   */
-            }
-            $insertSalesBackup = SalesBackup::create(
-                [
-                    'itemname' => $request->itemname,
-                    'itemcategory' => $request->itemcategory,
-                    'itemprice' => $request->itemprice,
-                    'itemqty' => $request->itemqty,
-                    'totalprice' => $request->totalprice,
-                    'soldby' => $request->soldby,
-                    'itemslug' => str_slug($request->itemname)
-                ] 
-            );
-
-            $insertSalesBackup->save();
-
-            if($insertSalesBackup){
-                DB::table('sales_backups')
-                ->join('sales', 'sales.itemname', '=', 'sales_backups.itemname')
-                ->where([
-                    ['sales.itemname', '=', $itemSold],
-                    ['sales.id', '=', $itemID],
-                    ['sales_backups.itemname', '=', $itemSold]
-                ])
-                ->update([
-                    'sales_backups.remainitem' => $currentQty - $itemQty,
-                    'sales_backups.totalprofit' => $productProfit * $itemQty
-
-                    ]);
-
-            }
-
-
+        foreach($datas['itemcategory'] as $get){
+            array_push($rows, []);
         }
+        foreach ($datas as $key => $values) {
+            foreach ($values as $index => $value) {
+                // Log::info($index);
+                array_push($rows[$index], $value);
+            }       
+        }
+        
+        foreach($rows as $column){
+            $saveSales = new Sales();
+            foreach($column as $index => $row){
+                if($index == 0){
+                    $saveSales->itemcategory = $row;
+                }
+                if ($index == 1) {
+                    
+                    $saveSales->itemname = $row;
 
+                    $saveSales->itemslug = str_slug($saveSales->itemname);
+                    // $ab = '';
+                    // foreach($tt as $ty => $check){
+                    //     dd($check);
+                    //     $ab += $check;
+                    // }
+                    // dd($ab);
+                }
+                if ($index == 2) {
+                    $saveSales->itemprice = $row;
+                }
+                if ($index == 3) {
+                    $saveSales->itemqty = $row;
+                }
+                if ($index == 4) {
+                    $saveSales->totalprice = $row;
+                }
+                if ($index == 5) {
+                    $saveSales->soldby = $row;
+                }
+            }
+            $saveSales->save();  
+            if($saveSales){
+                $latest = DB::table('sales')
+                                // ->groupBy('id','itemname')
+                                ->orderBy('created_at', 'desc')
+                                ->latest()
+                                ->limit($category)
+                                ->get();
+
+                for($i = 0; $i < count($latest); $i++){
+                    // dd($latest[$i]);
+                    $inventoryQty = Inventory::where('productname', $latest[$i]->itemname)->first();
+                    $currentQty = $inventoryQty->productremain;
+                    $productProfit = $inventoryQty->profit;
+                    // dd($productProfit);
+                    DB::table('inventories')
+                        ->join('sales', 'sales.itemname', '=', 'inventories.productname')
+                        ->where([
+                            ['sales.itemname', '=', $latest[$i]->itemname],
+                            ['sales.id', '=', $latest[$i]->id],
+                            ['inventories.productname', '=',  $latest[$i]->itemname]
+                        ])
+                        ->update([
+                            'inventories.productremain' => $currentQty - $latest[$i]->itemqty,
+                            'sales.remainitem' => $currentQty - $latest[$i]->itemqty,
+                            'sales.totalprofit' => $productProfit * $latest[$i]->itemqty
+                            ]);
+                    
+                    // updating inventory_backups
+                    DB::table('inventory_backups')
+                    ->join('sales', 'sales.itemname', '=', 'inventory_backups.productname')
+                    ->where([
+                        ['sales.itemname', '=', $latest[$i]->itemname],
+                        ['sales.id', '=', $latest[$i]->id],
+                        ['inventory_backups.productname', '=', $latest[$i]->itemname]
+                    ])
+                    ->update([
+                        'inventory_backups.productremain' => $currentQty - $latest[$i]->itemqty,
+                        'sales.remainitem' => $currentQty - $latest[$i]->itemqty,
+                        'sales.totalprofit' => $productProfit * $latest[$i]->itemqty
+                    ]);
+                }
+            }
+        }
         Alert::success('Done!', 'Item Sold Successfully');
-
+        return redirect()->route('sales.view');        
+        }
+        
+    
+    /*
+    {
+        if($insertSalesBackup){
+            DB::table('sales_backups')
+            ->join('sales', 'sales.itemname', '=', 'sales_backups.itemname')
+            ->where([
+                ['sales.itemname', '=', $itemSold],
+                ['sales.id', '=', $itemID],
+                ['sales_backups.itemname', '=', $itemSold]
+            ])
+            ->update([
+                'sales_backups.remainitem' => $currentQty - $itemQty,
+                'sales_backups.totalprofit' => $productProfit * $itemQty
+                ]);
+        }
+        Alert::success('Done!', 'Item Sold Successfully');
         return redirect()->route('sales.view');
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    */
     
-    public function getProduct($selectedCats)
+    
+    public function getProduct(Request $request)
     {
-        $catInfo = DB::table('inventories')
-                    ->join('categories', 'categories.categoryname', '=', 'inventories.productcategory')
-                    ->select('productname')
-                    ->where('productcategory', '=', $selectedCats)
-                    ->get();
-        // dd($catInfo);
-        return $catInfo;
+        $search = $request->get('term'); 
+        $products = Inventory::where('productname', 'like', '%'.$search. '%')->get();
+        $getResult = [];
+        foreach($products as $product){
+            array_push($getResult, $product['productname']);
+        }
+        return json_encode($getResult);
     }
     
 
     public function getProductPrice($selectedItem)
     {
         $productPrice = DB::table('inventories')
-                    ->select('productname','productremain', 'sellingprice')
+                    ->select('productname','productremain', 'sellingprice', 'productcategory')
                     ->where('productname', '=', $selectedItem)
                     ->get();
         // dd($productPrice);

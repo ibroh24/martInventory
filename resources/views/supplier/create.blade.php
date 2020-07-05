@@ -63,6 +63,11 @@
                                 </select>
                             </div>
                           </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <input type="text" name="totaldebt" class="form-control" placeholder="Current Debt">
+                            </div>
+                          </div>
                       
 
                           <div class="form-group m-t-30" style="margin-left: 70%">

@@ -34,6 +34,7 @@
                     <th>Good Supplies</th>
                     <th>Supplier Phone</th>
                     <th>Supplier Address</th>
+                    <th>Debt Amount</th>
                 </tr>
                 </thead>
 
@@ -50,6 +51,7 @@
                         <td>{{$supply->suppliedproduct}}</td>
                         <td>{{$supply->phone}}</td>
                         <td>{{$supply->address}}</td>
+                        <td>{{number_format($supply->totaldebt, 2, '.', ',')}}</td>
                     </tr>
                 @endforeach
                 @endif

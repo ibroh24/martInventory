@@ -10,6 +10,6 @@ class Supplier extends Model
     use Notifiable;
 
     protected $fillable = [
-        'suppliername', 'address', 'supplierslug', 'phone', 'suppliedproduct'
+        'suppliername', 'address', 'supplierslug', 'phone', 'suppliedproduct','totaldebt'
     ];
 }

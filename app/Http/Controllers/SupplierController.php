@@ -16,7 +16,7 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        $supplier = Supplier::all();
+        $supplier = Supplier::orderby('totaldebt', 'desc')->get();
         return view('supplier.view')->with('supplier', $supplier);
     }
 
@@ -49,6 +49,7 @@ class SupplierController extends Controller
                 'suppliername' => $request->suppliername,
                 'address' => $request->address,
                 'phone' => $request->phone,
+                'totaldebt' => $request->totaldebt,
                 'suppliedproduct' => $request->suppliedproduct,
                 'supplierslug' => str_slug($request->suppliername)
             ]
@@ -107,6 +108,7 @@ class SupplierController extends Controller
         $updatesupplier->suppliername = $request->suppliername;
         $updatesupplier->address = $request->address;
         $updatesupplier->phone = $request->phone;
+        $updatesupplier->totaldebt = $request->totaldebt;
         $updatesupplier->suppliedproduct = $request->suppliedproduct;
         $updatesupplier->supplierslug = str_slug($request->suppliername);
             
