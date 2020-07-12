@@ -29,7 +29,9 @@
             <table id="datatable-buttons" class="table table-striped table-colored table-info">
                 <thead>
                 <tr>
-                    {{-- <th>Action</th> --}}
+                    @if (Auth::user()->isAdmin)
+                        <th>Action</th>
+                    @endif
                     <th>Product Name</th>
                     <th>Quantity</th>
                     {{-- <th>Unit Qty</th> --}}
@@ -47,18 +49,11 @@
                     @foreach ($inventories as $inventory)
                     {{-- {{dd($inventory)}} --}}
                 <tr>
-                    {{-- <td>
-                        @if (!Auth::user()->isAdmin)
-                            <center>
-                                <a href="{{ route('inventory.edit', ['id'=>$inventory->productslug]) }}" title="Edit {{$inventory->productname}} Data" class="btn btn-sm btn-success  glyphicon glyphicon-edit" ></a>                            
-                            </center>
-                        @else
-                            <a href="{{ route('inventory.edit', ['id'=>$inventory->productslug]) }}" title="Edit {{$inventory->productname}} Data" class="btn btn-sm btn-success glyphicon glyphicon-edit" ></a>
-                        @endif
-                        @if (Auth::user()->isAdmin)
-                            <a onclick=" return confirm('Are you sure you want to delete {{$inventory->categoryname}} Data')" title="Delete {{$inventory->productname}} Data"  href="{{ route('inventory.destroy', ['id'=>$inventory->productslug])}}" class="btn btn-sm btn-danger glyphicon glyphicon-trash"></a>
-                        @endif
-                    </td> --}}
+                    @if (Auth::user()->isAdmin)
+                     <td>
+                        <a href="{{ route('inventory.edit', ['id'=>$inventory->productslug]) }}" title="Edit {{$inventory->productname}} Data" class="btn btn-sm btn-success glyphicon glyphicon-edit" ></a>  
+                    </td>
+                    @endif 
                     <td>{{$inventory->productname}}</td>
                     <td>{{$inventory->productqty}}</td>
                     <td>{{$inventory->productcategory}}</td>

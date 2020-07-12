@@ -91,17 +91,7 @@
                            
                           </div>
                           <br>
-                          <div class="row">
-                              {{-- <div class="col-md-6">
-                                <label class="control-label" style="margin-bottom: -8px">Product Quantity (Unit)</label>
-                                <input type="number" id="productunitqty" name="productunitqty" class="form-control" placeholder="Product Quantity (Bulk)">                                
-                            </div> --}}
-                           
-                            {{-- <div class="col-md-6">
-                                <label class="control-label" style="margin-bottom: -8px">Bulk Selling Price</label>
-                                <input type="number" id="bulksellingprice" name="bulksellingprice" class="form-control" placeholder="Bulk Selling Price">
-                            </div> --}}
-                          </div>
+                         
                           {{-- <br> --}}
                           <div class="row">
                             <div class="col-md-6">
@@ -115,17 +105,7 @@
                            
                           </div>
                           <br>
-                          <div class="row">
-                               {{-- <div class="col-md-6">
-                                <label class="control-label" style="margin-bottom: -8px">Unit Buying Price</label>
-                              <input type="number" id="unitbuyingprice" name="unitbuyingprice" class="form-control" placeholder="Unit Buying Price">
-                            </div> --}}                            
-                            {{-- <div class="col-md-6">
-                               
-                                <label class="control-label" style="margin-bottom: -8px">Unit Profit</label>
-                                <input type="text" readonly id="unitprofit" name="unitprofit" class="form-control">
-                          </div> --}}
-                          </div>
+                         
                           {{-- <br> --}}
                           <div class="row">
                             <div class="col-md-6">

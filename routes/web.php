@@ -85,4 +85,4 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 // ajax Calls
 Route::get('/getProduct/{selectedCats}', 'SalesController@getProduct');
 Route::get('/getProductPrice/{selectedItem}', 'SalesController@getProductPrice');
-Route::get('/getProductRemain/{selectedCats}', 'InventoryController@getProductRemain');
+Route::get('/getProductRemain/{editedProduct}', 'InventoryController@getProductRemain');

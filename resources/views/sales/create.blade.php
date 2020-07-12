@@ -157,13 +157,15 @@
 
                 if(productRemain === parseInt(dataId)){
                     alert('This is the last '+itemName+ ' we have in the Inventory');
-                }else if(productRemain < parseInt(dataId)){
-                    $('#itemqty'+priceIndex).val(parseInt('1'));
-                    $('#totalprice'+priceIndex).val(parseInt(data[0].sellingprice) * $('#itemqty'+priceIndex).val(parseInt(1)));
-                    alert('The Remaining Quantity is Lower Than Purchase Quantity');
-                    $('#change').html('');
-                    $('#cashpaid').val('');                    
                 }
+                
+                // else if(productRemain < parseInt(dataId)){
+                //     $('#itemqty'+priceIndex).val(parseInt('1'));
+                //     $('#totalprice'+priceIndex).val(parseInt(data[0].sellingprice) * $('#itemqty'+priceIndex).val(parseInt(1)));
+                //     alert('The Remaining Quantity is Lower Than Purchase Quantity');
+                //     $('#change').html('');
+                //     $('#cashpaid').val('');                    
+                // }
                         
             });
 

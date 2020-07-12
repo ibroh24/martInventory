@@ -29,13 +29,17 @@ class InventoryController extends Controller
 
     public function lowItems()
     {
-         $inventoryDatas = Inventory::where('productremain', '=', '10')->get();
+        $inventoryDatas = DB::table('inventories')
+                            ->where('productremain', '<=', '2')
+                            ->get();
+        // dd($inventoryDatas);
+        //  $inventoryDatas = Inventory::where('productremain', '<=', '2')->get();
         // $inventoryDatas = DB::table('inventories')
         //                         ->select('*')
         //                        ->where('productremain', '<=', 'reorderlevel')
         //                         // ->orwhere('productremain', '<=', '10')
         //                         ->get();
-        dd($inventoryDatas);
+        // dd($inventoryDatas);
         // View::share('inventoryDatas', $inventoryDatas);
         return view('inventory.viewupdate')->with('inventoryDatas', $inventoryDatas);
     }
@@ -267,11 +271,11 @@ class InventoryController extends Controller
     }
 
 
-    public function getProductRemain($selectedCats)
+    public function getProductRemain($editedProduct)
     {
         $remainProductValue = DB::table('inventories')
-                    ->select('productname', 'productbulkremain', 'productunitremain')
-                    ->where('productname', '=', $selectedCats)
+                    ->select('productname', 'productqty', 'productremain')
+                    ->where('productname', '=', $editedProduct)
                     ->get();
         // dd($remainProductValue);
         return $remainProductValue;
