@@ -203,8 +203,23 @@ class SalesController extends Controller
         $suppliers = Supplier::all();
         $products = Inventory::all();
         $productCategory = Category::all();
-        $editSales = Sales::where('itemslug', $id)->first();
+        $editSales = Sales::where('id', $id)->first();
+        // dd($editSales);
         return view('sales.edit')
+        ->with('products', $products)
+        ->with('suppliers', $suppliers)
+        ->with('productCategory', $productCategory)
+        ->with('editSales', $editSales);
+    }
+
+    public function returnsales($id)
+    {
+        $suppliers = Supplier::all();
+        $products = Inventory::all();
+        $productCategory = Category::all();
+        $editSales = Sales::where('id', $id)->first();
+        // dd($editSales);
+        return view('sales.return')
         ->with('products', $products)
         ->with('suppliers', $suppliers)
         ->with('productCategory', $productCategory)
@@ -273,6 +288,104 @@ class SalesController extends Controller
         Alert::success('Done!', 'Item Sold Successfully');
 
         return redirect()->route('sales.view');
+    }
+
+
+    public function return(Request $request, $id)
+    {
+
+        $this->validate($request, [
+            'itemname' => 'required',
+            'itemprice' => 'required|numeric',
+            'itemqty' => 'required|numeric',
+            'totalprice' => 'required|numeric',
+            'soldby' => 'required'
+        ]);
+        
+        $returnSales = Sales::where('id', $id)->first();
+    /*
+        $returnSales->itemname = $request->itemname;
+        $returnSales->itemtype = $request->itemtype;
+        $returnSales->itemprice = $request->itemprice;
+        $returnSales->itemqty = $request->itemqty;
+        $returnSales->totalprice = $request->totalprice;
+        $returnSales->soldby = $request->soldby;
+        $returnSales->itemslug = str_slug($request->itemname);
+
+        $returnSales->save();
+    */
+        $itemQty = $returnSales['itemqty'];
+        $itemID = $returnSales['id'];
+        $itemSlug = $returnSales['itemslug'];
+        $itemName = $returnSales['itemname'];
+        $inventoryData = Inventory::where('productname', $itemName)->first();
+        $productRemain = $inventoryData['productremain'];
+        // dd($productRemain);
+
+        if(!empty($itemQty)){
+            DB::table('inventories')
+                    ->join('sales', 'sales.itemname', '=', 'inventories.productname')
+                    ->where([
+                        ['sales.itemname', '=', $itemName, ],
+                        ['sales.id', '=', $itemID, ],
+                        ['inventories.productslug', '=', $itemSlug, ],
+                        ['sales.itemslug', '=', $itemSlug, ],
+                        ['inventories.productname', '=', $itemName, ]
+                    ])
+                    ->update(['inventories.productremain' => $productRemain + $itemQty]);
+
+            $returnSales->delete();
+            Alert::success('Deleted!', 'Sales Return Successfully');
+
+            return redirect()->route('sales.view');
+        }else{
+            Alert::info('Access Denied!', 'Item Quantity cannot be empty');
+            // return redirect()->route('sales.view');
+        }
+
+        /*
+        $updateSales->itemname = $request->itemname;
+        $updateSales->itemtype = $request->itemtype;
+        $updateSales->itemprice = $request->itemprice;
+        $updateSales->itemqty = $request->itemqty;
+        $updateSales->totalprice = $request->totalprice;
+        $updateSales->soldby = $request->soldby;
+        $updateSales->itemslug = str_slug($request->itemname);
+        
+        dd(strtolower($request->itemtype));
+        $itemSold = $request->itemname;
+        $itemQty = $request->itemqty;
+        $itemType = strtolower($request->itemtype);
+        $inventoryQty = Inventory::where('productname', $itemSold)->first();
+        $currentBulkQty = $inventoryQty->productbulkqty;
+        $currentUnitQty = $inventoryQty->productunitqty;
+        $updateSales->save();
+        if($updateSales){
+            if($itemType == 'unit'){
+                DB::table('inventories')
+                    ->join('sales', 'sales.itemname', '=', 'inventories.productname')
+                    ->where([
+                        ['sales.itemname', '=', $itemSold, ],
+                        ['inventories.productname', '=', $itemSold, ]
+                    ])
+                    ->update(['inventories.productremain' => $currentUnitQty - $itemQty]);
+            }elseif ($itemType == 'bulk') {
+                DB::table('inventories')
+                ->join('sales', 'sales.itemname', '=', 'inventories.productname')
+                ->where([
+                    ['sales.itemname', '=', $itemSold, ],
+                    ['inventories.productname', '=', $itemSold, ]
+                ])
+                ->update([
+                    'inventories.productbulkremain' => $currentBulkQty - $itemQty
+                    ]);
+            }
+
+        }
+            */
+        // Alert::success('Done!', 'Item Sold Successfully');
+
+        // return redirect()->route('sales.view');
     }
 
     // dynamic adding more fields

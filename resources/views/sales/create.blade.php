@@ -31,11 +31,11 @@
                             <div class="col-md-8">
                               <input type="text" class="form-control text-center" style="font-size:30px;" id="searchitem" placeholder="Search Item Name">
                               <br>
-                              <center>
-                              <button type="button" name="add" id="add" class="btn btn-info waves-effect waves-light w-md addrow">
-                                            Add More
-                                </button>
-                        </center>
+                                <center>
+                                    <button type="button" name="add" id="add" class="btn btn-info waves-effect waves-light w-md addrow">
+                                                Add Item
+                                    </button>
+                                </center>
                             </div>
                             <div class="col-md-2"></div>
                         </div>
@@ -86,6 +86,18 @@
                                     <td><b>Total: </b></td>
                                     <td colspan="2" id="grandtotal">0</td>
                                 </tr>
+                                @if (Auth::user()->isAdmin)
+                                <tr>
+                                    <td style="border: none">&nbsp;</td>
+                                    <td style="border: none">&nbsp;</td>
+                                    <td style="border: none">&nbsp;</td>
+                                    <td><b>Discount (%) </b></td>
+                                    <td colspan="2"> 
+                                        <input type="number" id="discount" onchange="discountCal()" class="form-control" placeholder="Discount %">
+                                    </td>
+                                </tr>
+                                    
+                                @endif
                                 <tr>
                                     <td style="border: none">&nbsp;</td>
                                     <td style="border: none">&nbsp;</td>
@@ -155,7 +167,7 @@
                 let productRemain = parseInt(data[0].productremain);
                 // console.log(productRemain);
 
-                if(productRemain === parseInt(dataId)){
+                if(productRemain >= parseInt(dataId)){
                     alert('This is the last '+itemName+ ' we have in the Inventory');
                 }
                 
@@ -200,6 +212,32 @@
         let tp = data.innerText
         data.innerText = parseFloat(tp) - parseFloat(totalPrice)
     }
+
+    // calculating percentage
+    function discountCal() {
+        $('#change').html('');
+        $('#cashpaid').val('');
+        let grandtotal = document.getElementById('grandtotal').innerHTML;
+        
+
+        let discount = $('#discount').val();
+        if(discount !== '' && discount !== null){
+
+            
+            let discountPercent = parseFloat(discount) / 100;
+            let discountValue = parseFloat(discountPercent) * parseFloat(grandtotal);
+            console.log(grandtotal);
+            console.log(discountValue);
+
+            let customerPayment = parseFloat(grandtotal) - parseFloat(discountValue);
+            console.log(customerPayment);
+        
+            document.getElementById('grandtotal').innerHTML = customerPayment;
+        }
+        
+    }
+
+
     function totalChange() {
         let grandTotal = document.getElementById('grandtotal').innerHTML;
         let cashPaid = document.getElementById('cashpaid');
@@ -207,6 +245,9 @@
         if(parseFloat(cashPaid.value) > parseFloat(grandTotal)){
             userChange.innerHTML = parseFloat(cashPaid.value) - parseFloat(grandTotal);
             console.log(userChange.innerHTML);
+        }else if(parseFloat(cashPaid.value) < parseFloat(grandTotal)){
+            alert("The amount Paid is lower than the Item Purchased!")
+            cashPaid.value = '';
         }
         console.log(grandTotal);
     }
@@ -274,6 +315,7 @@
                 deductTotal($(this).parents('tr')[0]['children'][4].children[0].value);
                 $('#change').html('');
                 $('#cashpaid').val('');
+                $('#discount').val('');
             });  
         });
     </script>

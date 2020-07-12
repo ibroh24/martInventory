@@ -39,8 +39,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/sales/create', 'SalesController@create')->name('sales.create');
     Route::post('/sales/store', 'SalesController@store')->name('sales.store');
     Route::get('/sales/delete/{slug}', 'SalesController@destroy')->name('sales.destroy');
-    Route::get('/sales/edit/{slug}', 'SalesController@edit')->name('sales.edit');
-    Route::post('/sales/update/{slug}', 'SalesController@update')->name('sales.update');
+    Route::get('/sales/edit/{id}', 'SalesController@edit')->name('sales.edit');
+    Route::get('/sales/returnsales/{id}', 'SalesController@returnsales')->name('sales.returnsales');
+    Route::post('/sales/update/{id}', 'SalesController@update')->name('sales.update');
+    Route::post('/sales/return/{id}', 'SalesController@return')->name('sales.return');
     
 
      // category crud

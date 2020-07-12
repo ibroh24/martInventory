@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    Faajs | Edit Sales
+    Faajs | Return Sales
 @endsection
 
 @section('breadcrumb')
@@ -10,7 +10,7 @@
     Sales 
 @endsection
 @section('submenu')
-    Edit Sales
+    Return Sales
 @endsection
 
 @section('content')
@@ -18,14 +18,14 @@
     <div class="card-box">
         <div class="row">
             <div class="col-sm-12 col-xs-12 m-t-20">
-                <h3 class="header-title m-t-0">Update {{$editSales->itemname}}'s Data</h3>
+                <h3 class="header-title m-t-0">Return {{$editSales->itemname}}</h3>
                 {{-- <p class="text-muted font-13 m-b-10">
                     Parsley is a javascript form validation library. It helps you provide your users with feedback on their form submission before sending it to your server.
                 </p> --}}
                 <hr>
 
                 <div class="p-20">
-                    <form method="POST" action="{{route('sales.edit', $editSales->id)}}">
+                    <form method="POST" action="{{route('sales.return', $editSales->id)}}">
                         {{ csrf_field() }}
                         @if (count($errors) > 0)
                         <div class="alert alert-danger">
@@ -84,11 +84,11 @@
                           <div class="row">
                             <div class="col-md-6">
                               <label class="control-label" style="margin-bottom: -8px">Item Price (Unit/Bulk)</label>
-                              <input type="text" id="itemprice" value="{{$editSales->itemprice}}" readonly name="itemprice" class="form-control" placeholder="Item Price">
+                              <input type="text" readonly id="itemprice" value="{{$editSales->itemprice}}" readonly name="itemprice" class="form-control" placeholder="Item Price">
                             </div>
                             <div class="col-md-6">
                               <label class="control-label" style="margin-bottom: -8px">Item Quantity</label>
-                                  <input type="number" name="itemqty" value="{{$editSales->itemqty}}" id="itemqty" class="form-control" placeholder="Item Quantity">
+                                  <input type="number" readonly name="itemqty" value="{{$editSales->itemqty}}" id="itemqty" class="form-control" placeholder="Item Quantity">
                             </div>
                           </div>
                           <br>
@@ -106,8 +106,8 @@
                             <br><br>
                             <div class="form-group m-t-20" style="margin-left: 70%">
                               {{-- <div> --}}
-                                  <button type="submit" class="btn btn-info waves-effect waves-light w-md">
-                                      Update
+                                  <button type="submit" class="btn btn-danger waves-effect waves-light w-md">
+                                      Return Item
                                   </button>
                                   <a href="{{route('sales.view')}}" type="reset" class="btn btn-warning waves-effect m-l-5 w-md">
                                       Cancel
@@ -126,7 +126,10 @@
 @endsection
 @section('script')
     <script>
+        
         $(document).ready(function () {
+            $('#itemtype').attr('disabled', 'true');
+            $('#itemname').attr('disabled', 'true');
 
             $('#itemqty').change(function () { 
                 if ( $('#itemqty').val() !=='' &&  $('#itemprice').val() !== '') {
@@ -136,10 +139,8 @@
                     $('#totalprice').val(parseFloat(result.toFixed(3)));
                 }
             });
-           
-           
-           /*
-            $('#bulksellingprice').change(function () { 
+        });
+            /*$('#bulksellingprice').change(function () { 
                 if ( $('#bulkbuyingprice').val() !=='' &&  $('#bulksellingprice').val() !== '') {
                     var buyingprice =  $('#bulkbuyingprice').val();
                     var sellingprice =  $('#bulksellingprice').val();
@@ -155,8 +156,8 @@
                     $('#unitprofit').val(parseFloat(result.toFixed(3)));
                 }
             });
-            */
-        });
+       
+        */
     </script>
     
 @endsection

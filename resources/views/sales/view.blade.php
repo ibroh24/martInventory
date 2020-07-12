@@ -51,8 +51,8 @@
                 <tr>
                     @if (Auth::user()->isAdmin)
                     <td>
-                       <a href="{{ route('sales.edit', ['id'=>$sales->itemslug]) }}" title="Edit {{$sales->itemname}} Data" class="btn btn-sm btn-success  glyphicon glyphicon-edit" ></a>                            
-                        
+                       <a href="{{ route('sales.edit', ['id'=>$sales->id]) }}" title="Edit {{$sales->itemname}} Data" class="btn btn-sm btn-success  glyphicon glyphicon-edit" ></a>                            
+                       <a href="{{ route('sales.returnsales', ['id'=>$sales->id]) }}" title="Return {{$sales->itemname}} Sales" class="btn btn-sm btn-danger glyphicon glyphicon-repeat" ></a> 
                         {{-- @else
                             <a href="{{ route('sales.edit', ['id'=>$sales->itemslug]) }}" title="Edit {{$sales->itemname}} Data" class="btn btn-sm btn-success glyphicon glyphicon-edit" ></a> --}}
                        
