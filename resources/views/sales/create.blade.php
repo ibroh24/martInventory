@@ -167,8 +167,8 @@
                 let productRemain = parseInt(data[0].productremain);
                 // console.log(productRemain);
 
-                if(productRemain >= parseInt(dataId)){
-                    alert('This is the last '+itemName+ ' we have in the Inventory');
+                if(parseInt(dataId) == productRemain){
+                    alert('This is the last "'+itemName+ '" we have in the Inventory');
                 }
                 
                 // else if(productRemain < parseInt(dataId)){

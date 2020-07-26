@@ -34,7 +34,7 @@
                     @endif
                     <th>Product Name</th>
                     <th>Quantity</th>
-                    {{-- <th>Unit Qty</th> --}}
+                    <th>Remain Qty</th>
                     <th>Product Category</th>
                     <th>Price</th>
                     {{-- <th>Unit Price</th> --}}
@@ -56,9 +56,10 @@
                     @endif 
                     <td>{{$inventory->productname}}</td>
                     <td>{{$inventory->productqty}}</td>
+                    <td>{{$inventory->productremain}}</td>
                     <td>{{$inventory->productcategory}}</td>
                     <td>{{number_format($inventory->sellingprice, 2)}}</td>
-                    <td>{{$inventory->created_at->format('l, F d, Y')}}</td>
+                    <td>{{$inventory->created_at->format('F d, Y')}}</td>
                     <td>{{$inventory->enteredby}}</td>
                 </tr>
                 @endforeach

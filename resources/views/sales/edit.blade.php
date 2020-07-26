@@ -25,7 +25,7 @@
                 <hr>
 
                 <div class="p-20">
-                    <form method="POST" action="{{route('sales.edit', $editSales->id)}}">
+                    <form method="POST" action="{{route('sales.update', $editSales->id)}}">
                         {{ csrf_field() }}
                         @if (count($errors) > 0)
                         <div class="alert alert-danger">
@@ -52,8 +52,9 @@
                                   @endforeach  
                               </select> --}}
   
-                              <label class="control-label" style="margin-bottom: -8px">Sales Type</label>
-                              <select class="form-control" id="itemtype" name="itemtype">
+                              <label class="control-label" style="margin-bottom: -8px">Item ID</label>
+                              <input type="text" id="itemid" value="{{$editSales->id}}" readonly name="id" class="form-control">
+                              {{-- <select class="form-control" id="itemtype" name="itemtype">
                                   <option>Select Sales Type</option>
                                   <option class="m-t-20" value="Bulk"
                                     @if(strtolower($editSales->itemtype) == "bulk")
@@ -64,11 +65,12 @@
                                   >Bulk</option>    
                                   <option class="m-t-20" value="Unit"
                                   >Unit</option>    
-                              </select>
+                              </select> --}}
                             </div>
                             <div class="col-md-6">
                               <label class="control-label" style="margin-bottom: -8px">Item Name</label>
-                              <select class="form-control" id="itemname" name="itemname">
+                              <input type="text" id="itemname" value="{{$editSales->itemname}}" readonly name="itemname" class="form-control">
+                              {{-- <select class="form-control" id="itemname" name="itemname">
                                   <option>Select Item</option>
                                   @foreach ($products as $product)
                                       <option class="m-t-20" value="{{$product->productname}}"
@@ -77,7 +79,7 @@
                                         @endif
                                         >{{$product->productname}}</option>    
                                   @endforeach  
-                              </select>
+                              </select> --}}
                             </div>
                           </div>
                           <br>

@@ -53,7 +53,8 @@
                               </select> --}}
   
                               <label class="control-label" style="margin-bottom: -8px">Sales Type</label>
-                              <select class="form-control" id="itemtype" name="itemtype">
+                              <input type="text" readonly id="itemtype" value="{{$editSales->itemtype}}" readonly name="itemprice" class="form-control">
+                              {{-- <select class="form-control" id="itemtype" name="itemtype">
                                   <option>Select Sales Type</option>
                                   <option class="m-t-20" value="Bulk"
                                     @if(strtolower($editSales->itemtype) == "bulk")
@@ -64,11 +65,12 @@
                                   >Bulk</option>    
                                   <option class="m-t-20" value="Unit"
                                   >Unit</option>    
-                              </select>
+                              </select> --}}
                             </div>
                             <div class="col-md-6">
                               <label class="control-label" style="margin-bottom: -8px">Item Name</label>
-                              <select class="form-control" id="itemname" name="itemname">
+                              <input type="text" readonly id="itemname" value="{{$editSales->itemname}}" readonly name="itemprice" class="form-control">
+                              {{-- <select class="form-control" id="itemname" name="itemname">
                                   <option>Select Item</option>
                                   @foreach ($products as $product)
                                       <option class="m-t-20" value="{{$product->productname}}"
@@ -77,7 +79,7 @@
                                         @endif
                                         >{{$product->productname}}</option>    
                                   @endforeach  
-                              </select>
+                              </select> --}}
                             </div>
                           </div>
                           <br>
