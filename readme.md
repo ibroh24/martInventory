@@ -14,6 +14,8 @@ Mart inventory is an open source project built with laravel and vue framework, i
 - Multiple sales at a go
 - Returning goods in multiple or single by an admin
 - Low product alert based on re-order level set.
+- Daily Sales reports
+- Sales analysis dashboard for admin ie returned goods, total users, current sales, profit of the day and total for the month 
 
 
 ## Setup Mart Inventory
